@@ -54,12 +54,13 @@ function App() {
         <div>
           {isAuthenticated ? (
             <>
-              <button type="button" onClick={() => navigate("/myflashcards")}>My Flashcards</button>
-              <button type="button" onClick={() => navigate("/search")}>Search</button>
-              <button type="button" onClick={() => navigate("/create")}>Create</button>
-              <button type="button" onClick={() => navigate("/profile")}>Profile</button>
+              <button type="button" className="nav-btn" onClick={() => navigate("/myflashcards")}>My Flashcards</button>
+              <button type="button" className="nav-btn" onClick={() => navigate("/search")}>Search</button>
+              <button type="button" className="nav-btn" onClick={() => navigate("/create")}>Create</button>
+              <button type="button" className="nav-btn" onClick={() => navigate("/profile")}>Profile</button>
               <button
                 type="button"
+                className="nav-btn"
                 onClick={() => {
                   setIsAuthenticated(false);
                   setView("default");
@@ -84,7 +85,7 @@ function App() {
             <>
               <section id="center">
                 <div>
-                  <h1>W.H.A.T.T</h1>
+                  <h1 >W.H.A.T.T</h1>
                   <p>We have a test tomorrow!</p>
                 </div>
               </section>
