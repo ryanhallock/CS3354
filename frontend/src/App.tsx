@@ -2,9 +2,13 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
 import MyFlashcards from "./pages/MyFlashcards";
+import Profile from "./pages/Profile";
+import Search from "./pages/Search";
+import Create from "./pages/Create";
 
 function App() {
   const [view, setView] = useState<"default" | "login" | "signup">("default");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   const renderAuthForm = () => {
@@ -31,7 +35,10 @@ function App() {
           <button
             type="button"
             className="primary-btn"
-            onClick={() => navigate("/myflashcards")}
+            onClick={() => {
+              setIsAuthenticated(true);
+              navigate("/myflashcards");
+            }}
           >
             {isSignup ? "Create Account" : "Log In"}
           </button>
@@ -45,17 +52,32 @@ function App() {
       <header className="top-nav">
         <div className="logo">W.H.A.T.T</div>
         <div>
-          <button type="button" onClick={() => setView("login")}>
-            Login
-          </button>
-          <button type="button" onClick={() => setView("signup")}>
-            Sign Up
-          </button>
+          {isAuthenticated ? (
+            <>
+              <button type="button" onClick={() => navigate("/myflashcards")}>My Flashcards</button>
+              <button type="button" onClick={() => navigate("/search")}>Search</button>
+              <button type="button" onClick={() => navigate("/create")}>Create</button>
+              <button type="button" onClick={() => navigate("/profile")}>Profile</button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  setView("default");
+                  navigate("/");
+                }}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" onClick={() => setView("login")}>Login</button>
+              <button type="button" onClick={() => setView("signup")}>Sign Up</button>
+            </>
+          )}
         </div>
       </header>
-
       <Routes>
-        {/* Home page (your current UI) */}
         <Route
           path="/"
           element={
@@ -123,9 +145,11 @@ function App() {
             </>
           }
         />
-
-        {/* MyFlashcards page */}
-        <Route path="/MyFlashcards" element={<MyFlashcards />} />
+        <Route path="/myflashcards" element={<MyFlashcards />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<MyFlashcards />} />
       </Routes>
     </>
   );
