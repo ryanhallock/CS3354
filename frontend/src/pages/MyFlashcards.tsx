@@ -18,6 +18,11 @@ export default function MyFlashcards() {
                     cardCount={24}
                     dateCreated="Apr 2, 2026"
                     isPrivate={false}
+                    flashcards={[
+                        { word: "Cell", definition: "The basic unit of life" },
+                        { word: "Mitochondria", definition: "Powerhouse of the cell" },
+                        { word: "Nucleus", definition: "Control center of the cell" },
+                    ]}
                 />
                 <FlashcardSetCard
                     title="US History"
@@ -25,6 +30,11 @@ export default function MyFlashcards() {
                     cardCount={32}
                     dateCreated="Mar 28, 2026"
                     isPrivate={true}
+                    flashcards={[
+                        { word: "1", definition: "definition 1" },
+                        { word: "2", definition: "definition 2" },
+                        { word: "3", definition: "definition 3" },
+                    ]}
                 />
             </div>
             <div className="dropdown">
