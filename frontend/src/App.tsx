@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import Create from "./pages/Create";
 import StudyView from "./pages/StudyView";
+import SetView from "./pages/SetView";
 
 function App() {
   const [view, setView] = useState<"default" | "login" | "signup">("default");
@@ -152,6 +153,7 @@ function App() {
         <Route path="/create" element={<Create />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/study" element={<StudyView />} />
+        <Route path="/setView" element={<SetView />} />
         <Route path="*" element={<MyFlashcards />} />
       </Routes>
     </>

@@ -36,7 +36,7 @@ export default function ClassCard({
     <div
       className="flashcard-set-card"
       onClick={() =>
-        navigate('/search', {
+        navigate('/setView', {
           state: {
             title,
             description,

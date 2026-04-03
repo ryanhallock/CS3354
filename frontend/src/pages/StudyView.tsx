@@ -6,8 +6,8 @@ export default function StudyView() {
     const card = state || {};
 
     return (
-        <div style={{ textAlign: 'left' }}>
-            <button onClick={() => navigate(-1)}className="primary-btn" style={{ justifySelf: 'left' }}>{'<'} Back</button>
+        <div style={{ textAlign: 'left',padding: '20px' }}>
+            <button onClick={() => navigate(-1)}className="return-btn">{'<'} Back</button>
             <div style={{ padding: '20px', justifyContent: 'space-between', alignItems: 'space-between', display: 'flex'}}>
             <div style={{ padding: '20px',display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                 <h1 className="title" style={{margin: '10px 0'}}>{card.title || 'Untitled'}</h1>
@@ -32,7 +32,6 @@ export default function StudyView() {
             </div>
             </div>
         </div>
-
 
     );
 }
