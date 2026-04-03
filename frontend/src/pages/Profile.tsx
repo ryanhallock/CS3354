@@ -18,7 +18,7 @@ export default function Profile() {
 
     return (
         <div style={styles.page}>
-            <h1 style={styles.heading}>Profile</h1>
+            <h1 className="title-blue">Profile</h1>
 
             <div style={styles.card}>
                 <div style={styles.leftColumn}>
@@ -62,7 +62,6 @@ export default function Profile() {
 
 const styles: { [key: string]: CSSProperties } = {
     page: {
-        backgroundColor: '#e6e6e6',
         minHeight: '100vh',
         padding: '30px',
         fontFamily: 'sans-serif',

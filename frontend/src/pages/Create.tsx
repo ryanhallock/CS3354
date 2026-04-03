@@ -12,7 +12,7 @@ export default function Create() {
     
     return (
         <div style={styles.page}>
-            <h1 style={styles.heading}>Create</h1>
+            <h1 className="title-blue">Create</h1>
 
             <div style={styles.card}>
                 <div style={styles.contentRow}>
@@ -93,7 +93,6 @@ export default function Create() {
 
 const styles: { [key: string]: CSSProperties } = {
     page: {
-        backgroundColor: '#e6e6e6',
         minHeight: '100vh',
         padding: '30px',
         fontFamily: 'sans-serif',
