@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.Instant;
 
 @Entity
 @Data
@@ -24,4 +27,8 @@ public class Flashcard {
 
     @Column(nullable = false)
     private String answer;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 }

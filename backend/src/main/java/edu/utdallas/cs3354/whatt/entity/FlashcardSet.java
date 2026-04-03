@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class FlashcardSet {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility = Visibility.PRIVATE;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
     public enum Visibility {
         PUBLIC, PRIVATE

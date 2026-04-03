@@ -120,6 +120,7 @@ public class FlashcardSetService {
                 set.getDescription(),
                 set.getVisibility(),
                 set.getOwner().getUsername(),
+                set.getCreatedAt(),
                 flashcards
         );
     }
