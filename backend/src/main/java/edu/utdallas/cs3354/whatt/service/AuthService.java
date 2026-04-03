@@ -11,16 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
     private static final String JWT_COOKIE_NAME = "jwt";
-
-    @Value("${jwt.expiration}")
-    private long jwtExpiration;
-
-    @Value("${jwt.cookie.secure}")
-    private boolean cookieSecure;
-
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${jwt.cookie.secure}")
+    private boolean cookieSecure;
 
     public AuthService(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
@@ -36,7 +33,7 @@ public class AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         final String token = jwtService.generateToken(username);
-         return buildJwtCookie(token, jwtExpiration);
+        return buildJwtCookie(token, jwtExpiration);
     }
 
     public ResponseCookie logout(String username) {

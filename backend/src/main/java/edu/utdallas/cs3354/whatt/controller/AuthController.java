@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,7 +51,16 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/whoami")
+    public ResponseEntity<Map<String, String>> whoami(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "You are not authenticated"));
+        }
+        return ResponseEntity.ok(Map.of("message", "You are authenticated as " + userDetails.getUsername()));
+    }
+
     @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) {
         ResponseCookie logoutCookie = authService.logout(userDetails.getUsername());
         response.addHeader(HttpHeaders.SET_COOKIE, logoutCookie.toString());
