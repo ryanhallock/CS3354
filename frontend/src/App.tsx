@@ -85,7 +85,18 @@ function App() {
           path="/"
           element={
             <>
-              <section id="center">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "100vh",
+              padding: "20px",
+              gap: "0px",
+              flexWrap: "wrap"
+            }}
+          >
+        <section id="center" style={{ width: '40%', maxWidth: '900px', textAlign: 'center' }}>
                 <div>
                   <h1 style={{ fontFamily: '"Lexend Exa", sans-serif', color: '#1C208A', fontWeight: 600, fontSize: 60, marginBottom: 35}}>W.H.A.T.T</h1>
                   <h2>We have a test tomorrow!</h2>
@@ -93,7 +104,7 @@ function App() {
               </section>
 
               {view === "default" ? (
-                <section id="next-steps">
+                <section id="auth-section">
                   <div id="docs">
                     <h2>1. Upload your slideshow</h2>
                     <p>Watch AI transform it into interactive flashcards!</p>
@@ -109,6 +120,8 @@ function App() {
                 renderAuthForm()
               )}
 
+            </div>
+              
               <div className="ticks"></div>
               <section id="spacer"></section>
             </>
