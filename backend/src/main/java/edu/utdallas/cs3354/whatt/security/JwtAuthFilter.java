@@ -18,6 +18,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
+    private static final String JWT_COOKIE_NAME = "jwt";
+
     private final JwtService jwtService;
     private final DatabaseUserDetailsService userDetailsService;
     private final WebAuthenticationDetailsSource authDetailsSource = new WebAuthenticationDetailsSource();
@@ -36,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 Cookie[] cookies = request.getCookies();
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
-                        if ("jwt".equals(cookie.getName())) {
+                        if (JWT_COOKIE_NAME.equals(cookie.getName())) {
                             String username = jwtService.extractUsername(cookie.getValue());
                             if (username != null) {
                                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -52,8 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Swallow all exceptions — leave SecurityContext empty.
-            // Spring Security's ExceptionTranslationFilter returns 401 automatically.
+            System.err.println("Error during JWT authentication: " + e.getMessage());
         }
         filterChain.doFilter(request, response);
     }
