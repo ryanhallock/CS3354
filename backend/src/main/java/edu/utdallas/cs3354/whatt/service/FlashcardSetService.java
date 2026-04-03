@@ -35,6 +35,7 @@ public class FlashcardSetService {
 
         FlashcardSet flashcardSet = new FlashcardSet();
         flashcardSet.setOwner(owner);
+        flashcardSet.setDescription(request.description());
         flashcardSet.setTitle(request.title());
         flashcardSet.setVisibility(request.visibility());
 
@@ -116,6 +117,7 @@ public class FlashcardSetService {
         return new FlashcardSetResponse(
                 set.getId(),
                 set.getTitle(),
+                set.getDescription(),
                 set.getVisibility(),
                 set.getOwner().getUsername(),
                 flashcards

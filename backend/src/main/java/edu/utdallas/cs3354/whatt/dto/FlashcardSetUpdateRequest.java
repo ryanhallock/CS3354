@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record FlashcardSetUpdateRequest(
-        @NotBlank String title,
+        @NotBlank String title, @NotBlank String description,
         @NotNull FlashcardSet.Visibility visibility,
         @NotNull @Size(min = 1) List<@Valid FlashcardRequest> flashcards
 ) {

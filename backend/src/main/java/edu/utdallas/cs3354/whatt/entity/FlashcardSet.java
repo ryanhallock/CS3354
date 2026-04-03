@@ -21,6 +21,9 @@ public class FlashcardSet {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
