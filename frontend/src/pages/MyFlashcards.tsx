@@ -70,7 +70,7 @@ export default function MyFlashcards() {
                 
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', margin: '10px' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', padding: '20px' }}>
             <h1 className="title-blue">My Flashcards</h1>
 
             <div className="dropdown">
