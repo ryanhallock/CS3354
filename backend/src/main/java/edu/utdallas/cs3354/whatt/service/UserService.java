@@ -21,9 +21,13 @@ public class UserService {
     }
 
     public User createUser(String username, String rawPassword, Role role) {
-        // While all admins are users, Spring doesnt think that way, so we need to grant Admin both roles
-        rawPassword = passwordEncoder.encode(rawPassword);
-        var user = new User(username, rawPassword, role == Role.ADMIN ? Set.of(Role.ADMIN, Role.USER) : Set.of(Role.USER));
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        
+        // While all admins are users, Spring doesn't think that way, so we need to grant Admin both roles
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        var user = new User(username, encodedPassword, role == Role.ADMIN ? Set.of(Role.ADMIN, Role.USER) : Set.of(Role.USER));
         userRepository.save(user);
         return user;
     }
