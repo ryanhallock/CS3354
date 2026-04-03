@@ -24,8 +24,8 @@
   padding: 8px 14px;
   border-radius: 6px;
   border: 1px solid var(--border);
-  background: white;
-  color: var(--text-h);
+  background: #1C208A;
+  color: white;
   cursor: pointer;
   outline: none;
 }
@@ -36,7 +36,7 @@
 }
 
 .dropdown {
-  margin: 10px;
+  
   background: white;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -79,7 +79,8 @@
   font-weight: 500;
   color: #1C208A;
   justify-self: start;
-  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .title {
@@ -112,7 +113,7 @@
 }
 
 .return-btn:hover {
-  background: #16207a;
+  background: #ccc;
 }
 
 .nav-btn {
@@ -126,7 +127,7 @@
 }
 
 .nav-btn:hover {
-  background: #f0f2ff;
+  background: #ccc;
 }
 
 .add-btn {

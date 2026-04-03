@@ -74,8 +74,8 @@ function App() {
             </>
           ) : (
             <>
-              <button type="button" onClick={() => setView("login")}>Login</button>
-              <button type="button" onClick={() => setView("signup")}>Sign Up</button>
+              <button type="button" color="blue" onClick={() => setView("login")}>Login</button>
+              <button type="button" className="nav-btn" onClick={() => setView("signup")}>Sign Up</button>
             </>
           )}
         </div>
@@ -87,8 +87,8 @@ function App() {
             <>
               <section id="center">
                 <div>
-                  <h1 >W.H.A.T.T</h1>
-                  <p>We have a test tomorrow!</p>
+                  <h1 style={{ fontFamily: '"Lexend Exa", sans-serif', color: '#1C208A', fontWeight: 600, fontSize: 60, marginBottom: 35}}>W.H.A.T.T</h1>
+                  <h2>We have a test tomorrow!</h2>
                 </div>
               </section>
 
@@ -99,44 +99,10 @@ function App() {
                     <p>Watch AI transform it into interactive flashcards!</p>
                     <br />
                     <h2>2. Organize your sets by class or category</h2>
-                    <p>Watch AI transform it into interactive flashcards!</p>
+                    <p>Stay organized and find what you need quickly</p>
                     <br />
                     <h2>3. Study your own sets or search for others</h2>
-                    <p>Watch AI transform it into interactive flashcards!</p>
-                  </div>
-
-                  <div id="social">
-                    <svg className="icon" role="presentation" aria-hidden="true">
-                      <use href="/icons.svg#social-icon"></use>
-                    </svg>
-                    <h2>Connect with us</h2>
-                    <p>Join the Vite community</p>
-                    <ul>
-                      <li>
-                        <a href="https://github.com/vitejs/vite" target="_blank">
-                          <svg
-                            className="button-icon"
-                            role="presentation"
-                            aria-hidden="true"
-                          >
-                            <use href="/icons.svg#github-icon"></use>
-                          </svg>
-                          GitHub
-                        </a>
-                      </li>
-                      <li>
-                        <a href="https://chat.vite.dev/" target="_blank">
-                          <svg
-                            className="button-icon"
-                            role="presentation"
-                            aria-hidden="true"
-                          >
-                            <use href="/icons.svg#discord-icon"></use>
-                          </svg>
-                          Discord
-                        </a>
-                      </li>
-                    </ul>
+                    <p>Memorize and learn effectively</p>
                   </div>
                 </section>
               ) : (

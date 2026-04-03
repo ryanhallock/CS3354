@@ -36,7 +36,7 @@ export default function StudyView() {
             <div style={{ padding: '20px',display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                 <h1 className="title" style={{margin: '10px 0'}}>{card.title || 'Untitled'}</h1>
                 <p>Description: {card.description || 'No description available'}</p>
-                <p>Number of Cards: {card.cardCount ?? 'N/A'}</p>
+                <p>Number of Cards: {flashcards.length ?? 'N/A'}</p>
                 <p>Date Created: {card.dateCreated ?? 'Unknown'}</p>
                 <p>Status: {card.isPrivate ? 'Private' : 'Public'}</p>
             </div>

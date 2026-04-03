@@ -9,7 +9,7 @@ export default function MyFlashcards() {
         {
             title: "Biology 101",
             description: "Cellular structure and functions",
-            cardCount: 24,
+            cardCount: 3,
             dateCreated: "Apr 2, 2026",
             isPrivate: false,
             flashcards: [
@@ -21,7 +21,7 @@ export default function MyFlashcards() {
         {
             title: "US History",
             description: "Civil War era and aftermath",
-            cardCount: 32,
+            cardCount: 3,
             dateCreated: "Mar 28, 2026",
             isPrivate: true,
             flashcards: [
@@ -33,7 +33,7 @@ export default function MyFlashcards() {
         {
             title: "US History 2",
             description: "Civil War era and aftermath",
-            cardCount: 32,
+            cardCount: 3,
             dateCreated: "Mar 28, 2026",
             isPrivate: true,
             flashcards: [
@@ -70,7 +70,7 @@ export default function MyFlashcards() {
                 
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', margin: '10px' }}>
             <h1 className="title-blue">My Flashcards</h1>
 
             <div className="dropdown">
@@ -89,6 +89,7 @@ export default function MyFlashcards() {
                     />
                 ))}
             </div>
+            <br></br>
             <div className="dropdown">
                 <h1 className="title">By Class</h1>
             </div>
