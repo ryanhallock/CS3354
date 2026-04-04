@@ -4,6 +4,7 @@ import edu.utdallas.cs3354.whatt.controller.AuthController;
 import edu.utdallas.cs3354.whatt.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -13,37 +14,15 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static io.jsonwebtoken.security.Jwks.json;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Web-layer tests for AuthController using MockMvc.
- * POST /api/auth/register   body: { username, password }
- *   valid     : both fields present, username not taken  → 201 + message
- *   duplicate : username already taken                   → 400 + error
- *   invalid   : blank/missing field (@NotBlank)          → 400
- *
- * POST /api/auth/login      body: { username, password }
- *   valid     : correct credentials                      → 200 + Set-Cookie jwt
- *   invalid   : wrong credentials                        → 401 + error
- *   invalid   : blank/missing field                      → 400
- *
- * POST /api/auth/logout     (no body)
- *   any       : always                                   → 200 + clears jwt cookie
- *
- * test cases
- *  #   endpoint         scenario                          HTTP status  body / cookie
- *  1   /register        valid new user                    201          message present
- *  2   /register        duplicate username                400          error present
- *  3   /register        missing username field            400          (constraint violation)
- *  4   /register        blank password field              400          (constraint violation)
- *  5   /login           correct credentials               200          Set-Cookie: jwt=...; message present
- *  6   /login           wrong credentials                 401          error present; NO Set-Cookie
- *  7   /login           blank username                    400
- *  8   /logout          any caller                        200          Set-Cookie: jwt="" (cleared)
- */
+
+ // Web-layer tests for AuthController using MockMvc.
+
 @WebMvcTest(AuthController.class)
 @Import(edu.utdallas.cs3354.whatt.configuration.SecurityConfig.class)
 @TestPropertySource(properties = {
@@ -58,8 +37,8 @@ class AuthControllerTest {
 
     @Mock
     private AuthService authService;
-
-    // Required by SecurityConfig beans that MockMvc will load
+    @InjectMocks
+    private AuthController authController;
     @Mock
     private edu.utdallas.cs3354.whatt.security.JwtAuthFilter jwtAuthFilter;
 
@@ -69,7 +48,7 @@ class AuthControllerTest {
     // register
 
     @Test
-    @DisplayName("TC-1: POST /register with valid data returns 201 and success message")
+    @DisplayName("TC1: POST /register with valid data returns 201 and success message")
     void register_validInput_returns201() throws Exception {
         doNothing().when(authService).register("alice", "pass123");
 
@@ -98,7 +77,7 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("TC-3: POST /register with missing username returns 400")
+    @DisplayName("TC3: POST /register with missing username returns 400")
     void register_missingUsername_returns400() throws Exception {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -109,7 +88,7 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("TC-4: POST /register with blank password returns 400")
+    @DisplayName("TC4: POST /register with blank password returns 400")
     void register_blankPassword_returns400() throws Exception {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,9 +101,9 @@ class AuthControllerTest {
     // login
 
     @Test
-    @DisplayName("TC-5: POST /login with correct credentials returns 200 and sets jwt cookie")
+    @DisplayName("TC5: POST /login with correct credentials returns 200 and sets jwt cookie")
     void login_validCredentials_returns200WithCookie() throws Exception {
-        when(authService.login("alice", "pass123")).thenReturn("mocked.jwt.token");
+        doReturn("mocked.jwt.token").when(authService).login("alice", "pass123");
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -138,7 +117,7 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("TC-6: POST /login with wrong credentials returns 401")
+    @DisplayName("TC6: POST /login with wrong credentials returns 401")
     void login_badCredentials_returns401() throws Exception {
         doThrow(new BadCredentialsException("Bad credentials"))
                 .when(authService).login("alice", "wrong");
@@ -153,7 +132,7 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("TC-7: POST /login with blank username returns 400")
+    @DisplayName("TC7: POST /login with blank username returns 400")
     void login_blankUsername_returns400() throws Exception {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +145,7 @@ class AuthControllerTest {
     // logout
 
     @Test
-    @DisplayName("TC-8: POST /logout returns 200 and clears jwt cookie (maxAge=0)")
+    @DisplayName("TC8: POST /logout returns 200 and clears jwt cookie (maxAge=0)")
     void logout_returns200AndClearsCookie() throws Exception {
         mockMvc.perform(post("/api/auth/logout"))
                 .andExpect(status().isOk())

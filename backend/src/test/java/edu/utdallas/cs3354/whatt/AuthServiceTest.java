@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,20 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for AuthService.
- * register(username, password)
- *
- * login(username, password)
- * valid   : AuthenticationManager accepts credentials returns JWT string
- * invalid : AuthenticationManager throws BadCredentialsException propagates
- * test cases
- *  #   method     input                 expected
- *  1   register   "alice", "pass"       userService.createUser("alice","pass", Role.USER) called
- *  2   login      "alice", "correct"    returns non-null token from JwtService
- *  3   login      AuthManager throws    BadCredentialsException propagates; generateToken is never called
- *  4   login      "alice", "correct"    AuthManager called with correct UsernamePasswordAuthenticationToken
- */
+
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
@@ -67,10 +55,10 @@ class AuthServiceTest {
     void login_validCredentials_returnsToken() {
         when(jwtService.generateToken("alice")).thenReturn("mocked.jwt.token");
 
-        String token = authService.login("alice", "correct");
+        ResponseCookie cookie = authService.login("alice", "correct");
 
-        assertNotNull(token);
-        assertEquals("mocked.jwt.token", token);
+        assertNotNull(cookie);
+        assertEquals("mocked.jwt.token", cookie.getValue());
     }
 
     // TC3 login propagates exception on bad credentials

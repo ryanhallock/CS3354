@@ -24,17 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for JwtAuthFilter.
- *test cases
- *  #   scenario                                   SecurityContext set?  chain.doFilter called?
- *  1   no cookies                                 no                   yes
- *  2   cookie present but not "jwt"               no                   yes
- *  3   valid jwt cookie                           yes                  yes
- *  4   jwt cookie with null-username token        no                   yes
- *  5   SecurityContext already populated          no new auth          yes
- *  6   JwtService throws RuntimeException         no                   yes
- */
+
 @ExtendWith(MockitoExtension.class)
 class JwtAuthFilterTest {
 
@@ -81,7 +71,7 @@ class JwtAuthFilterTest {
     //  TC2 unrelated cookie
 
     @Test
-    @DisplayName("TC-2: cookie exists but not 'jwt' → SecurityContext empty, chain continues")
+    @DisplayName("TC-2: cookie exists but not 'jwt'  SecurityContext empty, chain continues")
     void unrelatedCookie_securityContextEmpty() throws Exception {
         request.setCookies(new Cookie("session", "abc123"));
 
@@ -95,7 +85,7 @@ class JwtAuthFilterTest {
     // TC3 valid jwt cookie
 
     @Test
-    @DisplayName("TC-3: valid jwt cookie → authentication set in SecurityContext")
+    @DisplayName("TC-3: valid jwt cookie  authentication set in SecurityContext")
     void validJwtCookie_authenticatesUser() throws Exception {
         request.setCookies(new Cookie("jwt", "valid.token.here"));
         when(jwtService.extractUsername("valid.token.here")).thenReturn("alice");
@@ -112,7 +102,7 @@ class JwtAuthFilterTest {
     // TC4 jwt cookie but token yields null username
 
     @Test
-    @DisplayName("TC-4: jwt cookie with invalid token (extractUsername=null) → no auth set")
+    @DisplayName("TC-4: jwt cookie with invalid token (extractUsername=null)  no auth set")
     void invalidToken_noAuthenticationSet() throws Exception {
         request.setCookies(new Cookie("jwt", "bad.token"));
         when(jwtService.extractUsername("bad.token")).thenReturn(null);
@@ -146,7 +136,7 @@ class JwtAuthFilterTest {
     // TC6 JwtService throws unexpectedly
 
     @Test
-    @DisplayName("TC-6: JwtService throws RuntimeException → exception swallowed, chain continues")
+    @DisplayName("TC-6: JwtService throws RuntimeException  exception swallowed, chain continues")
     void jwtServiceThrows_exceptionSwallowed_chainContinues() throws Exception {
         request.setCookies(new Cookie("jwt", "boom.token"));
         when(jwtService.extractUsername("boom.token"))

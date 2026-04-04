@@ -21,22 +21,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for DatabaseUserDetailsService.
- *
- * loadUserByUsername(username : String)
- *   valid   : username exists in repository
- *   invalid : username not found  UsernameNotFoundException
- *
- *   Granted authorities must use the Role.prefixed value ("ROLE_USER", "ROLE_ADMIN").
- *
- * test cases
- *  #   input                          expected
- *  1   existing USER                  UserDetails with username + ROLE_USER authority
- *  2   existing ADMIN (both roles)    UserDetails with ROLE_ADMIN + ROLE_USER authorities
- *  3   unknown username               UsernameNotFoundException
- *  4   existing USER                  UserDetails.getPassword() == encoded password from DB
- */
+
 @ExtendWith(MockitoExtension.class)
 class DatabaseUserDetailsServiceTest {
 
