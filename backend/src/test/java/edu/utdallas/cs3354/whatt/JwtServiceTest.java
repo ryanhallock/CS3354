@@ -69,7 +69,7 @@ class JwtServiceTest {
     @DisplayName("TC-2: generateToken called twice produces distinct tokens")
     void generateToken_calledTwice_producesDistinctTokens() throws InterruptedException {
         String t1 = jwtService.generateToken("alice");
-        Thread.sleep(10); // ensure iat differs
+        Thread.sleep(1000); // ensure iat differs
         String t2 = jwtService.generateToken("alice");
 
         assertNotEquals(t1, t2, "Tokens issued at different times must differ");

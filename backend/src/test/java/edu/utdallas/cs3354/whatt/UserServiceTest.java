@@ -62,10 +62,11 @@ class UserServiceTest {
     void setUp() {
         // Default: username is NOT taken
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
-        // Simulate encoding: prefix with "encoded:"
+    }
+
+    private void stubEncodeAndSave() {
         when(passwordEncoder.encode(anyString()))
                 .thenAnswer(inv -> "encoded:" + inv.getArgument(0));
-        // Return the saved entity unchanged
         when(userRepository.save(any(User.class)))
                 .thenAnswer(inv -> inv.getArgument(0));
     }
@@ -75,6 +76,7 @@ class UserServiceTest {
     @Test
     @DisplayName("TC-1: createUser with Role.USER saves user with only USER role")
     void createUser_roleUser_savedWithUserRoleOnly() {
+        stubEncodeAndSave();
         User result = userService.createUser("alice", "pass123", Role.USER);
 
         assertNotNull(result);
@@ -88,6 +90,7 @@ class UserServiceTest {
     @Test
     @DisplayName("TC-2: createUser with Role.ADMIN saves user with both ADMIN and USER roles")
     void createUser_roleAdmin_savedWithAdminAndUserRoles() {
+        stubEncodeAndSave();
         User result = userService.createUser("bob", "adminPass", Role.ADMIN);
 
         assertNotNull(result);
@@ -118,6 +121,7 @@ class UserServiceTest {
     @Test
     @DisplayName("TC-4: createUser encodes the raw password before persisting")
     void createUser_passwordIsEncoded() {
+        stubEncodeAndSave();
         User result = userService.createUser("carol", "mySecret", Role.USER);
 
         // PasswordEncoder must be called with the raw password
@@ -132,6 +136,7 @@ class UserServiceTest {
     @Test
     @DisplayName("TC-5: createUser calls userRepository.save() exactly once on success")
     void createUser_repositorySaveCalledOnce() {
+        stubEncodeAndSave();
         userService.createUser("dave", "pass", Role.USER);
 
         verify(userRepository, times(1)).save(any(User.class));
