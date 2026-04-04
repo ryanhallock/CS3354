@@ -62,6 +62,9 @@ public class AuthController {
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "You are not authenticated"));
+        }
         ResponseCookie logoutCookie = authService.logout(userDetails.getUsername());
         response.addHeader(HttpHeaders.SET_COOKIE, logoutCookie.toString());
         return ResponseEntity.ok(Map.of("message", "Logged out"));
