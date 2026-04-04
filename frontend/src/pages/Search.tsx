@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FlashcardSetCard from '../components/FlashcardSetCard';
+import FlashcardSetCard from '@/components/FlashcardSetCard';
 
 export default function Search() {
     const [searchQuery, setSearchQuery] = useState('');

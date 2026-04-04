@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import FlashcardSetCard from '../components/FlashcardSetCard';
+import FlashcardSetCard from '@/components/FlashcardSetCard';
 import type { Key } from 'react';
 
 export default function SetView() {
