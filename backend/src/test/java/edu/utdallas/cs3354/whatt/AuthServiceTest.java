@@ -1,6 +1,5 @@
 package edu.utdallas.cs3354.whatt;
 
-import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.security.JwtService;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.AuthService;
@@ -21,7 +20,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-
+/**
+ * Unit tests for AuthService.
+ * input values and specification
+ *   register(username : String, password : String)
+ *     valid        : non-blank username/password delegated to UserService
+ *   login(username : String, password : String)
+ *     valid        : AuthenticationManager accepts credentials
+ *     exceptional  : AuthenticationManager throws BadCredentialsException
+ * scenario candidates and expected output
+ *  #   method     scenario                                expected
+ *  1   register   new username/password                    createUser(username,password,Role.USER) called once
+ *  2   login      valid credentials                        non-null jwt ResponseCookie returned
+ *  3   login      bad credentials                          BadCredentialsException propagates; no token generation
+ *  4   login      valid credentials                        AuthenticationManager receives exact username/password token
+ * narrowed concrete values used in tests
+ *  - register: username="alice", password="pass123"
+ *  - login valid: username="alice", password="correct", generated token="mocked.jwt.token"
+ *  - login invalid: username="alice", password="wrongPass"
+ */
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 

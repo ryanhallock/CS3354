@@ -9,6 +9,28 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for User.
+ * input values and specification
+ *   constructor(username : String, password : String, roles : Set<Role>)
+ *     valid        : non-null username/password with at least USER or ADMIN role
+ *   isAdmin()
+ *     valid        : roles contains ADMIN returns true
+ *     invalid      : roles without ADMIN returns false
+ *   roles set immutability
+ *     getRoles() returns an unmodifiable set view
+ * scenario candidates and expected output
+ *  #   scenario                                   expected
+ *  1   USER only                                  isAdmin() == false
+ *  2   ADMIN + USER                               isAdmin() == true
+ *  3   ADMIN only                                 isAdmin() == true
+ *  4   mutate getRoles() result                   UnsupportedOperationException
+ *  5   constructor values                         getters return same username/password
+ * narrowed concrete values used in tests
+ *  - usernames: "alice", "bob", "root", "carol", "dave"
+ *  - passwords: "hashed", "s3cr3t"
+ *  - role sets: {USER}, {ADMIN}, {ADMIN, USER}
+ */
 class UserTest {
 
     @Test

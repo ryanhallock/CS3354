@@ -32,8 +32,33 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
- // Web-layer tests for AuthController using MockMvc.
 
+/**
+ * Web-layer tests for AuthController using MockMvc.
+ * POST /api/auth/register   body: { username, password }
+ *   valid     : both fields present, username not taken  → 201 + message
+ *   duplicate : username already taken                   → 400 + error
+ *   invalid   : blank/missing field (@NotBlank)          → 400
+ *
+ * POST /api/auth/login      body: { username, password }
+ *   valid     : correct credentials                      → 200 + Set-Cookie jwt
+ *   invalid   : wrong credentials                        → 401 + error
+ *   invalid   : blank/missing field                      → 400
+ *
+ * POST /api/auth/logout     (no body)
+ *   any       : always                                   → 200 + clears jwt cookie
+ *
+ * test cases
+ *  #   endpoint         scenario                          HTTP status  body / cookie
+ *  1   /register        valid new user                    201          message present
+ *  2   /register        duplicate username                400          error present
+ *  3   /register        missing username field            400          (constraint violation)
+ *  4   /register        blank password field              400          (constraint violation)
+ *  5   /login           correct credentials               200          Set-Cookie: jwt=...; message present
+ *  6   /login           wrong credentials                 401          error present; NO Set-Cookie
+ *  7   /login           blank username                    400
+ *  8   /logout          any caller                        200          Set-Cookie: jwt="" (cleared)
+ */
 @WebMvcTest(AuthController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import(AuthControllerTest.TestMvcConfig.class)

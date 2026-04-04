@@ -10,11 +10,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for JwtService.
- * test cases
+ * input values and specification
+ *   generateToken(username : String)
+ *     valid        : non-blank username generates signed JWT
+ *   extractUsername(token : String)
+ *     valid        : signed, non-expired JWT returns subject
+ *     invalid      : null, blank, malformed, tampered, expired token
+ *     exceptional  : invalid inputs should be handled by returning null
+ *   isTokenValid(token : String)
+ *     valid        : signed, non-expired JWT returns true
+ *     invalid      : null, malformed, tampered, expired token returns false
+ * scenario candidates and expected output
  *  #   method            input                               expected
  *  1   generateToken     "alice"                             non-null, non-blank JWT string
- *  2   generateToken     "alice" x2                         two distinct tokens (iat differs)
- *  3   extractUsername   token from generateToken           alice
+ *  2   generateToken     "alice" x2                          two distinct tokens (iat differs)
+ *  3   extractUsername   token from generateToken            alice
  *  4   extractUsername   null                                null (no exception)
  *  5   extractUsername   ""                                  null (no exception)
  *  6   extractUsername   "not.a.jwt"                         null (no exception)
@@ -25,6 +35,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * 11   isTokenValid      garbage string                      false
  * 12   isTokenValid      tampered token                      false
  * 13   isTokenValid      expired token                       false
+ * narrowed concrete values used in tests
+ *  - secret: "test-secret-key-that-is-32-bytes!!"
+ *  - expirations: 3600000L (valid), -1000L (expired)
+ *  - username: "alice"
+ *  - malformed tokens: "not.a.jwt.token", "garbage.token.value"
  */
 class JwtServiceTest {
 

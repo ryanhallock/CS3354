@@ -25,6 +25,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
+/**
+ * Unit tests for JwtAuthFilter.
+ * input values and specification
+ *   HTTP cookies (Cookie[])
+ *     valid        : contains cookie named "jwt" whose token maps to a username
+ *     invalid      : no cookies, or cookies without "jwt", or token maps to null username
+ *     exceptional  : JwtService throws while parsing token
+ *   SecurityContext state
+ *     empty        : filter may authenticate user from JWT
+ *     pre-populated: filter must not override existing authentication
+ * scenario candidates and expected output
+ *  #   scenario                                   SecurityContext set?  chain.doFilter called?
+ *  1   no cookies                                 no                    yes
+ *  2   cookie present but not "jwt"               no                    yes
+ *  3   valid jwt cookie                           yes                   yes
+ *  4   jwt cookie with null-username token        no                    yes
+ *  5   SecurityContext already populated          no new auth           yes
+ *  6   JwtService throws RuntimeException         no                    yes
+ * narrowed concrete values used in tests
+ *  - cookie names: "jwt", "session"
+ *  - token strings: "valid.token.here", "bad.token", "some.token", "boom.token"
+ *  - extracted username: "alice"
+ */
 @ExtendWith(MockitoExtension.class)
 class JwtAuthFilterTest {
 
