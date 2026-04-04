@@ -67,16 +67,15 @@ export default function MyFlashcards() {
             flashcardSets: flashcardSetsData
         }
     ];
-                
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', padding: '20px' }}>
-            <h1 className="title-blue">My Flashcards</h1>
+        <div className="relative min-h-screen p-5">
+            <h1 className="text-[30px] font-medium text-primary justify-self-start mt-5 mb-5">My Flashcards</h1>
 
-            <div className="dropdown">
-                <h1 className="title">All Sets</h1>
+            <div className="bg-surface border border-border rounded-md shadow-lg flex justify-between">
+                <h1 className="text-[22px] font-medium text-heading justify-self-start m-5">All Sets</h1>
             </div>
-            <div style={{ display: 'flex', overflowX: 'auto', gap: '16px', padding: '20px' }}>
+            <div className="flex overflow-x-auto gap-4 p-5">
                 {flashcardSetsData.map((set, index) => (
                     <FlashcardSetCard
                         key={index}
@@ -89,26 +88,25 @@ export default function MyFlashcards() {
                     />
                 ))}
             </div>
-            <br></br>
-            <div className="dropdown">
-                <h1 className="title">By Class</h1>
+            <br />
+            <div className="bg-surface border border-border rounded-md shadow-lg flex justify-between">
+                <h1 className="text-[22px] font-medium text-heading justify-self-start m-5">By Class</h1>
             </div>
-            <div style={{ display: 'flex', overflowX: 'auto', gap: '16px', padding: '20px' }}>
-            
-            {flashcardClasses.map((cls, index) => (
-                <ClassCard
-                    key={index}
-                    title={cls.title}
-                    description={cls.description}
-                    setCount={cls.setCount}
-                    dateCreated={cls.dateCreated}
-                    flashcardSets={cls.flashcardSets}
-                />
-            ))}
+            <div className="flex overflow-x-auto gap-4 p-5">
+                {flashcardClasses.map((cls, index) => (
+                    <ClassCard
+                        key={index}
+                        title={cls.title}
+                        description={cls.description}
+                        setCount={cls.setCount}
+                        dateCreated={cls.dateCreated}
+                        flashcardSets={cls.flashcardSets}
+                    />
+                ))}
             </div>
 
             <button
-                className="add-btn"
+                className="absolute bottom-5 right-5 w-[50px] h-[50px] rounded-full bg-primary text-white border-none text-2xl cursor-pointer flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.2)] hover:bg-[#16207a]"
                 onClick={() => navigate('/create')}>
                 +
             </button>

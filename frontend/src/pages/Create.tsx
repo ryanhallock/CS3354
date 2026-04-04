@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { CSSProperties } from 'react';
 
 export default function Create() {
     const [deck, setDeck] = useState({
@@ -9,34 +8,34 @@ export default function Create() {
     });
 
     const handleGenerateFlashCard = () => {}
-    
-    return (
-        <div style={styles.page}>
-            <h1 className="title-blue">Create</h1>
 
-            <div style={styles.card}>
-                <div style={styles.contentRow}>
+    return (
+        <div className="min-h-screen p-[30px] flex flex-col items-stretch box-border w-full text-left">
+            <h1 className="text-[30px] font-medium text-primary justify-self-start mt-5 mb-5">Create</h1>
+
+            <div className="bg-surface rounded-xl p-[40px_50px] w-full box-border shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex flex-col gap-10">
+                <div className="flex flex-row gap-[60px] w-full">
                     {/* Left column */}
-                    <div style={styles.leftColumn}>
-                        <div style={styles.headerTextGroup}>
-                            <p style={styles.uploadFileTitle}>Upload File</p>
-                            <p style={styles.supportedFormats}>Supported formats: PDF, PPTX, Google Slides</p>
+                    <div className="flex flex-col flex-[1.2] gap-5">
+                        <div className="flex flex-col gap-1 mb-[10px]">
+                            <p className="text-base text-[#111] m-0 font-medium">Upload File</p>
+                            <p className="text-sm text-[#555] m-0">Supported formats: PDF, PPTX, Google Slides</p>
                         </div>
 
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Title</label>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[15px] text-[#111]">Title</label>
                             <input
                                 type="text"
-                                style={styles.inputField}
+                                className="bg-gray-100 border-none rounded-lg px-[14px] py-3 text-base text-[#333] w-full box-border outline-none"
                                 value={deck.title}
                                 onChange={(e) => setDeck({ ...deck, title: e.target.value })}
                             />
                         </div>
 
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Description</label>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[15px] text-[#111]">Description</label>
                             <textarea
-                                style={styles.textareaField}
+                                className="bg-gray-100 border-none rounded-lg px-[14px] py-3 text-base text-[#333] w-full box-border min-h-[110px] resize-y outline-none font-[inherit]"
                                 value={deck.description}
                                 onChange={(e) => setDeck({ ...deck, description: e.target.value })}
                             />
@@ -44,29 +43,29 @@ export default function Create() {
                     </div>
 
                     {/* Right column */}
-                    <div style={styles.rightColumn}>
-                        <label htmlFor="file-upload" style={styles.uploadBox}>
-                            <input type="file" id="file-upload" accept=".pdf,.pptx" style={{ display: 'none' }} />
-                            <div style={styles.uploadLabel}>
+                    <div className="flex flex-col flex-1 gap-[30px]">
+                        <label htmlFor="file-upload" className="w-full border-2 border-dashed border-[#dcdcdc] rounded-xl flex justify-center items-center flex-1 min-h-[220px] bg-surface cursor-pointer box-border">
+                            <input type="file" id="file-upload" accept=".pdf,.pptx" className="hidden" />
+                            <div className="flex flex-col items-center gap-3">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8a8a9e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="17 8 12 3 7 8"></polyline>
                                     <line x1="12" y1="3" x2="12" y2="15"></line>
                                 </svg>
-                                <span style={styles.uploadText}>Upload here</span>
+                                <span className="text-[15px] text-[#333]">Upload here</span>
                             </div>
                         </label>
 
-                        <div style={styles.publicToggleRow}>
-                            <span style={styles.publicLabel}>Make public</span>
-                            
-                            <div style={styles.switch} onClick={() => setDeck({ ...deck, isPublic: !deck.isPublic })}>
-                                <div style={deck.isPublic ? styles.sliderChecked : styles.slider}>
-                                    <div style={deck.isPublic ? styles.sliderThumbChecked : styles.sliderThumb}></div>
+                        <div className="flex flex-row items-center justify-center gap-3">
+                            <span className="text-[15px] text-[#111]">Make public</span>
+
+                            <div className="relative inline-block w-[46px] h-[24px] cursor-pointer" onClick={() => setDeck({ ...deck, isPublic: !deck.isPublic })}>
+                                <div className={`absolute inset-0 transition-colors duration-300 rounded-[24px] ${deck.isPublic ? 'bg-primary' : 'bg-[#dcdcdc]'}`}>
+                                    <div className={`absolute h-5 w-5 bottom-0.5 bg-white transition-[left] duration-300 rounded-full shadow-sm ${deck.isPublic ? 'left-[24px]' : 'left-0.5'}`}></div>
                                 </div>
                             </div>
-                            
-                            <span style={styles.lockIcon}>
+
+                            <span className="flex items-center justify-center">
                                 {deck.isPublic ? (
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8a8a9e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -83,211 +82,10 @@ export default function Create() {
                     </div>
                 </div>
 
-                <button style={styles.generateBtn} onClick={handleGenerateFlashCard}>
+                <button className="bg-primary text-white border-none rounded-lg p-4 text-base font-semibold cursor-pointer w-full box-border" onClick={handleGenerateFlashCard}>
                     Generate Flashcards
                 </button>
             </div>
         </div>
     );
 }
-
-const styles: { [key: string]: CSSProperties } = {
-    page: {
-        minHeight: '100vh',
-        padding: '30px',
-        fontFamily: 'sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        boxSizing: 'border-box',
-        width: '100%',
-        textAlign: 'left',
-    },
-    heading: {
-        color: '#2a2a8c',
-        fontSize: '24px',
-        fontWeight: '700',
-        marginBottom: '20px',
-        textAlign: 'left',
-    },
-    card: {
-        backgroundColor: '#ffffff',
-        borderRadius: '12px',
-        padding: '40px 50px',
-        width: '100%',
-        boxSizing: 'border-box',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '40px',
-    },
-    contentRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '60px',
-        width: '100%',
-    },
-    leftColumn: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1.2,
-        gap: '20px',
-    },
-    rightColumn: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        gap: '30px',
-    },
-    headerTextGroup: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '4px',
-        marginBottom: '10px',
-    },
-    uploadFileTitle: {
-        fontSize: '16px',
-        color: '#111',
-        margin: 0,
-        fontWeight: '500',
-    },
-    supportedFormats: {
-        fontSize: '14px',
-        color: '#555',
-        margin: 0,
-    },
-    formGroup: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-    },
-    label: {
-        fontSize: '15px',
-        color: '#111',
-    },
-    inputField: {
-        backgroundColor: '#f2f2f2',
-        border: 'none',
-        borderRadius: '8px',
-        padding: '12px 14px',
-        fontSize: '16px',
-        color: '#333',
-        width: '100%',
-        boxSizing: 'border-box',
-        outline: 'none',
-    },
-    textareaField: {
-        backgroundColor: '#f2f2f2',
-        border: 'none',
-        borderRadius: '8px',
-        padding: '12px 14px',
-        fontSize: '16px',
-        color: '#333',
-        width: '100%',
-        boxSizing: 'border-box',
-        minHeight: '110px',
-        resize: 'vertical',
-        outline: 'none',
-        fontFamily: 'inherit',
-    },
-    uploadBox: {
-        width: '100%',
-        border: '2px dashed #dcdcdc',
-        borderRadius: '12px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        minHeight: '220px',
-        backgroundColor: '#ffffff',
-        cursor: 'pointer',
-        boxSizing: 'border-box',
-    },
-    uploadLabel: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '12px',
-    },
-    uploadText: {
-        fontSize: '15px',
-        color: '#333',
-    },
-    publicToggleRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '12px',
-    },
-    publicLabel: {
-        fontSize: '15px',
-        color: '#111',
-    },
-    switch: {
-        position: 'relative',
-        display: 'inline-block',
-        width: '46px',
-        height: '24px',
-        cursor: 'pointer',
-    },
-    slider: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#dcdcdc',
-        transition: '.3s',
-        borderRadius: '24px',
-    },
-    sliderChecked: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#2a2a8c',
-        transition: '.3s',
-        borderRadius: '24px',
-    },
-    sliderThumb: {
-        position: 'absolute',
-        height: '20px',
-        width: '20px',
-        left: '2px',
-        bottom: '2px',
-        backgroundColor: 'white',
-        transition: '.3s',
-        borderRadius: '50%',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-    },
-    sliderThumbChecked: {
-        position: 'absolute',
-        height: '20px',
-        width: '20px',
-        left: '24px',
-        bottom: '2px',
-        backgroundColor: 'white',
-        transition: '.3s',
-        borderRadius: '50%',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-    },
-    lockIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    generateBtn: {
-        backgroundColor: '#2a2a8c',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '8px',
-        padding: '16px',
-        fontSize: '16px',
-        fontWeight: '600',
-        cursor: 'pointer',
-        width: '100%',
-        boxSizing: 'border-box',
-    },
-};

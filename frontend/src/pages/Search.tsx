@@ -4,7 +4,6 @@ import FlashcardSetCard from '../components/FlashcardSetCard';
 export default function Search() {
     const [searchQuery, setSearchQuery] = useState('');
 
-    //sample data for flashcard sets
     const flashcardSetsData = [
         {
             title: "Biology 101",
@@ -89,33 +88,20 @@ export default function Search() {
     });
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', padding: '20px' }}>
-            <h1 className="title-blue">Search</h1>
+        <div className="relative min-h-screen p-5">
+            <h1 className="text-[30px] font-medium text-primary justify-self-start mt-5 mb-5">Search</h1>
 
-            <div style={{ marginBottom: '20px' }}>
+            <div className="mb-5">
                 <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by title or description..."
-                    style={{
-                        width: '98%',
-                        padding: '10px 12px',
-                        border: '1px solid #ccc',
-                        borderRadius: '8px',
-                        fontSize: '16px'
-                    }}
+                    className="w-[98%] px-3 py-[10px] border border-[#ccc] rounded-lg text-base bg-surface text-heading"
                 />
             </div>
 
-            <div style={{
-                display: 'grid',
-                gridTemplateRows: 'repeat(3, 1fr)',
-                gridAutoFlow: 'column',
-                overflowX: 'auto',
-                gap: '16px',
-                paddingBottom: '20px'
-            }}>
+            <div className="grid grid-rows-3 grid-flow-col overflow-x-auto gap-4 pb-5">
                 {filteredSets.length > 0 ? (
                     filteredSets.map((set, index) => (
                         <FlashcardSetCard
@@ -129,7 +115,7 @@ export default function Search() {
                         />
                     ))
                 ) : (
-                    <div style={{ color: '#666' }}>No sets match your search</div>
+                    <div className="text-[#666]">No sets match your search</div>
                 )}
             </div>
         </div>
