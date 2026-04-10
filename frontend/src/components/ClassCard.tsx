@@ -34,7 +34,7 @@ export default function ClassCard({
 
   return (
     <div
-      className="border-border bg-surface min-w-[250px] cursor-pointer rounded-lg border p-4 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      className="border-border bg-surface min-w-62.5 cursor-pointer rounded-lg border p-4 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
       onClick={() =>
         navigate("/setView", {
           state: {
@@ -51,13 +51,13 @@ export default function ClassCard({
         <h3 className="text-heading m-0 text-base font-semibold">{title}</h3>
         <FaFolder />
       </div>
-      <p className="text-text my-[10px] text-left text-sm leading-relaxed">{description}</p>
+      <p className="text-text my-2.5 text-left text-sm leading-relaxed">{description}</p>
       <div className="text-heading flex justify-between text-xs">
         <span>{setCount} sets</span>
         <span>{dateCreated}</span>
       </div>
       {flashcardSets && flashcardSets.length > 0 && (
-        <div className="mt-4 grid max-h-[200px] grid-flow-col grid-rows-2 gap-2 overflow-x-auto"></div>
+        <div className="mt-4 grid max-h-50 grid-flow-col grid-rows-2 gap-2 overflow-x-auto"></div>
       )}
     </div>
   );
