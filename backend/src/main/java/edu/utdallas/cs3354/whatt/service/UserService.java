@@ -24,7 +24,7 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
-        
+
         // While all admins are users, Spring doesn't think that way, so we need to grant Admin both roles
         String encodedPassword = passwordEncoder.encode(rawPassword);
         var user = new User(username, encodedPassword, role == Role.ADMIN ? Set.of(Role.ADMIN, Role.USER) : Set.of(Role.USER));

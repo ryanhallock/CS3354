@@ -1,8 +1,6 @@
 package edu.utdallas.cs3354.whatt;
 
 import edu.utdallas.cs3354.whatt.controller.FlashcardSetController;
-import edu.utdallas.cs3354.whatt.dto.FlashcardResponse;
-import edu.utdallas.cs3354.whatt.dto.FlashcardSetCreateRequest;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
@@ -25,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -208,7 +205,10 @@ class FlashcardSetControllerTest {
                                 {
                                   "title": "Updated Set",
                                   "description": "New Desc",
-                                  "visibility": "PUBLIC"
+                                  "visibility": "PUBLIC",
+                                  "flashcards": [
+                                    { "question": "Q", "answer": "A" }
+                                  ]
                                 }
                                 """))
                 .andExpect(status().isOk())
@@ -225,7 +225,10 @@ class FlashcardSetControllerTest {
                                 {
                                   "title": "",
                                   "description": "New Desc",
-                                  "visibility": "PUBLIC"
+                                  "visibility": "PUBLIC",
+                                  "flashcards": [
+                                    { "question": "Q", "answer": "A" }
+                                  ]
                                 }
                                 """))
                 .andExpect(status().isBadRequest());

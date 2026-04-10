@@ -14,4 +14,3 @@ public record FlashcardSetCreateRequest(
         @NotNull @Size(min = 1) List<@Valid FlashcardRequest> flashcards
 ) {
 }
-

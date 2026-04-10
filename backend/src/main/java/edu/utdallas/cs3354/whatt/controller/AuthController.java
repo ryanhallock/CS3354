@@ -2,11 +2,9 @@ package edu.utdallas.cs3354.whatt.controller;
 
 import edu.utdallas.cs3354.whatt.dto.AuthRequest;
 import edu.utdallas.cs3354.whatt.service.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;

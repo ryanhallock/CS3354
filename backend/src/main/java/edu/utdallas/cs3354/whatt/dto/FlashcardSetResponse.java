@@ -15,4 +15,3 @@ public record FlashcardSetResponse(
         List<FlashcardResponse> flashcards
 ) {
 }
-

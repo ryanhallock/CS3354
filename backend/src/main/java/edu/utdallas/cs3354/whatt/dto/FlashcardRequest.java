@@ -4,4 +4,3 @@ import jakarta.validation.constraints.NotBlank;
 
 public record FlashcardRequest(@NotBlank String question, @NotBlank String answer) {
 }
-
