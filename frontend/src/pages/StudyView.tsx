@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { GrEdit } from "react-icons/gr";
 
 export default function StudyView() {
     const { state } = useLocation();
@@ -41,7 +42,11 @@ export default function StudyView() {
                 <p>Status: {card.isPrivate ? 'Private' : 'Public'}</p>
             </div>
             <div>
-                <h2 className="title">Flashcards</h2>
+                <div style={{flexDirection: 'row', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <h2 className="title">Flashcards</h2>
+                <GrEdit />
+                </div>
+
                 {flashcards.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
                         <div 
