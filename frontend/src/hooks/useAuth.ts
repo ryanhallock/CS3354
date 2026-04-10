@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AUTH_QUERY_KEY = ["auth-status"];
 
@@ -52,7 +52,7 @@ export const useAuth = () => {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error((data as { error?: string }).error ?? "Signup failed");
-      
+
       // Log in automatically after registration
       return loginMutation.mutateAsync({ u, p });
     },

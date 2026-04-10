@@ -1,26 +1,27 @@
-import { Routes, Route } from "react-router-dom";
-import { Header } from "@/components/layout/Header";
+import { Route, Routes } from "react-router-dom";
+
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import Home from "@/pages/Home";
+import { Header } from "@/components/layout/Header";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
+import Create from "@/pages/Create";
+import Home from "@/pages/Home";
 import MyFlashcards from "@/pages/MyFlashcards";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/Search";
-import Create from "@/pages/Create";
 import StudyView from "@/pages/StudyView";
 
 function App() {
   return (
-    <div className="min-h-screen bg-surface text-text font-sans">
+    <div className="bg-surface text-text min-h-screen font-sans">
       <Header />
-      
+
       <main className="container mx-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          
+
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/myflashcards" element={<MyFlashcards />} />

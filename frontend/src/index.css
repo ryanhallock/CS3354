@@ -3,14 +3,14 @@
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
 @theme {
-  --color-primary: #1C208A;
-  --color-bg: #F4F4F4;
+  --color-primary: #1c208a;
+  --color-bg: #f4f4f4;
   --color-surface: #ffffff;
   --color-border: #e5e4e7;
   --color-text: #6b6375;
   --color-heading: #08060d;
 
-  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

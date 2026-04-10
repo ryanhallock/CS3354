@@ -1,17 +1,17 @@
-import { useNavigate } from 'react-router-dom';
 import { FaFolder } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface Flashcard {
-  word: string;
-  definition: string;
+  id: number;
+  question: string;
+  answer: string;
 }
 
 interface FlashcardSetCardProps {
   title: string;
   description: string;
-  cardCount: number;
-  dateCreated: string;
-  isPrivate: boolean;
+  visibility: "PUBLIC" | "PRIVATE";
+  createdAt: string;
   flashcards: Flashcard[];
 }
 
@@ -34,9 +34,9 @@ export default function ClassCard({
 
   return (
     <div
-      className="border border-border rounded-lg p-4 bg-surface shadow-sm transition-[box-shadow,transform] duration-300 cursor-pointer min-w-[250px] hover:shadow-md hover:-translate-y-0.5"
+      className="border-border bg-surface min-w-[250px] cursor-pointer rounded-lg border p-4 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
       onClick={() =>
-        navigate('/setView', {
+        navigate("/setView", {
           state: {
             title,
             description,
@@ -47,18 +47,17 @@ export default function ClassCard({
         })
       }
     >
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="m-0 text-base font-semibold text-heading">{title}</h3>
+      <div className="mb-2 flex items-start justify-between">
+        <h3 className="text-heading m-0 text-base font-semibold">{title}</h3>
         <FaFolder />
       </div>
-      <p className="text-sm text-text my-[10px] leading-relaxed text-left">{description}</p>
-      <div className="flex justify-between text-xs text-heading">
+      <p className="text-text my-[10px] text-left text-sm leading-relaxed">{description}</p>
+      <div className="text-heading flex justify-between text-xs">
         <span>{setCount} sets</span>
         <span>{dateCreated}</span>
       </div>
       {flashcardSets && flashcardSets.length > 0 && (
-        <div className="grid grid-rows-2 grid-flow-col overflow-x-auto gap-2 mt-4 max-h-[200px]">
-        </div>
+        <div className="mt-4 grid max-h-[200px] grid-flow-col grid-rows-2 gap-2 overflow-x-auto"></div>
       )}
     </div>
   );

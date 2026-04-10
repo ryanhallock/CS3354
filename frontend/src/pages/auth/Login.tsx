@@ -1,6 +1,7 @@
-import { useNavigate, Navigate, Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 import { AuthForm } from "@/components/auth/AuthForm";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -8,8 +9,8 @@ export default function Login() {
 
   if (isUserLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface">
-        <div className="text-xl font-medium animate-pulse text-heading">Checking session...</div>
+      <div className="bg-surface flex min-h-screen items-center justify-center">
+        <div className="text-heading animate-pulse text-xl font-medium">Checking session...</div>
       </div>
     );
   }
@@ -19,24 +20,27 @@ export default function Login() {
   }
 
   const handleLogin = (u: string, p: string) => {
-    login.mutate({ u, p }, {
-      onSuccess: () => {
-        navigate("/myflashcards");
-      }
-    });
+    login.mutate(
+      { u, p },
+      {
+        onSuccess: () => {
+          navigate("/myflashcards");
+        },
+      },
+    );
   };
 
   return (
-    <div className="pt-10 px-4">
-      <AuthForm 
-        type="login" 
-        onSubmit={handleLogin} 
-        error={login.error?.message} 
+    <div className="px-4 pt-10">
+      <AuthForm
+        type="login"
+        onSubmit={handleLogin}
+        error={login.error?.message}
         isLoading={login.isPending}
       />
-      <p className="text-center mt-6 text-text">
+      <p className="text-text mt-6 text-center">
         Don't have an account?{" "}
-        <Link to="/signup" className="text-primary hover:underline font-medium">
+        <Link to="/signup" className="text-primary font-medium hover:underline">
           Sign Up
         </Link>
       </p>

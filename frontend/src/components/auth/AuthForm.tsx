@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Input } from "@/components/ui/Input";
+
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 interface AuthFormProps {
   type: "login" | "signup";
@@ -24,11 +25,9 @@ export function AuthForm({ type, onSubmit, error, isLoading }: AuthFormProps) {
   };
 
   return (
-    <section className="border border-border rounded-[10px] mx-auto my-5 max-w-130 p-5 text-left bg-surface shadow-sm">
-      <h2 className="mb-4 text-2xl font-bold text-heading">
-        {isSignup ? "Sign Up" : "Login"}
-      </h2>
-      
+    <section className="border-border bg-surface mx-auto my-5 max-w-130 rounded-[10px] border p-5 text-left shadow-sm">
+      <h2 className="text-heading mb-4 text-2xl font-bold">{isSignup ? "Sign Up" : "Login"}</h2>
+
       {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
       {isSignup && !passwordsMatch && confirmPassword && (
         <p className="mb-4 text-sm text-red-500">Passwords do not match</p>
@@ -64,9 +63,9 @@ export function AuthForm({ type, onSubmit, error, isLoading }: AuthFormProps) {
           />
         )}
 
-        <Button 
-          type="submit" 
-          className="mt-2" 
+        <Button
+          type="submit"
+          className="mt-2"
           disabled={isLoading || (isSignup && !passwordsMatch)}
         >
           {isLoading ? "Processing..." : isSignup ? "Create Account" : "Log In"}

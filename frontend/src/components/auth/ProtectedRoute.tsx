@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
+
 import { useAuth } from "@/hooks/useAuth";
 
 export function ProtectedRoute() {
@@ -6,8 +7,8 @@ export function ProtectedRoute() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface">
-        <div className="text-xl font-medium animate-pulse text-heading">Verifying...</div>
+      <div className="bg-surface flex min-h-screen items-center justify-center">
+        <div className="text-heading animate-pulse text-xl font-medium">Verifying...</div>
       </div>
     );
   }
