@@ -9,73 +9,67 @@ export default function Search() {
     {
       title: "Biology 101",
       description: "Cellular structure and functions",
-      cardCount: 3,
-      dateCreated: "Apr 2, 2026",
-      isPrivate: false,
+      visibility: "PUBLIC" as const,
+      createdAt: "2026-04-02T00:00:00Z",
       flashcards: [
-        { word: "Cell", definition: "The basic unit of life" },
-        { word: "Mitochondria", definition: "Powerhouse of the cell" },
-        { word: "Nucleus", definition: "Control center of the cell" },
+        { id: 1, question: "Cell", answer: "The basic unit of life" },
+        { id: 2, question: "Mitochondria", answer: "Powerhouse of the cell" },
+        { id: 3, question: "Nucleus", answer: "Control center of the cell" },
       ],
     },
     {
       title: "US History",
       description: "Civil War era and aftermath",
-      cardCount: 3,
-      dateCreated: "Mar 28, 2026",
-      isPrivate: true,
+      visibility: "PRIVATE" as const,
+      createdAt: "2026-03-28T00:00:00Z",
       flashcards: [
-        { word: "1", definition: "definition 1" },
-        { word: "2", definition: "definition 2" },
-        { word: "3", definition: "definition 3" },
+        { id: 4, question: "Question 1", answer: "Answer 1" },
+        { id: 5, question: "Question 2", answer: "Answer 2" },
+        { id: 6, question: "Question 3", answer: "Answer 3" },
       ],
     },
     {
       title: "US History 2",
       description: "Civil War era and aftermath",
-      cardCount: 3,
-      dateCreated: "Mar 28, 2026",
-      isPrivate: true,
+      visibility: "PRIVATE" as const,
+      createdAt: "2026-03-28T00:00:00Z",
       flashcards: [
-        { word: "1", definition: "definition 1" },
-        { word: "2", definition: "definition 2" },
-        { word: "3", definition: "definition 3" },
+        { id: 7, question: "Question 1", answer: "Answer 1" },
+        { id: 8, question: "Question 2", answer: "Answer 2" },
+        { id: 9, question: "Question 3", answer: "Answer 3" },
       ],
     },
     {
       title: "Biology 101",
       description: "Cellular structure and functions",
-      cardCount: 3,
-      dateCreated: "Apr 2, 2026",
-      isPrivate: false,
+      visibility: "PUBLIC" as const,
+      createdAt: "2026-04-02T00:00:00Z",
       flashcards: [
-        { word: "Cell", definition: "The basic unit of life" },
-        { word: "Mitochondria", definition: "Powerhouse of the cell" },
-        { word: "Nucleus", definition: "Control center of the cell" },
+        { id: 10, question: "Cell", answer: "The basic unit of life" },
+        { id: 11, question: "Mitochondria", answer: "Powerhouse of the cell" },
+        { id: 12, question: "Nucleus", answer: "Control center of the cell" },
       ],
     },
     {
       title: "US History",
       description: "Civil War era and aftermath",
-      cardCount: 3,
-      dateCreated: "Mar 28, 2026",
-      isPrivate: true,
+      visibility: "PRIVATE" as const,
+      createdAt: "2026-03-28T00:00:00Z",
       flashcards: [
-        { word: "1", definition: "definition 1" },
-        { word: "2", definition: "definition 2" },
-        { word: "3", definition: "definition 3" },
+        { id: 13, question: "Question 1", answer: "Answer 1" },
+        { id: 14, question: "Question 2", answer: "Answer 2" },
+        { id: 15, question: "Question 3", answer: "Answer 3" },
       ],
     },
     {
       title: "US History 6",
       description: "Civil War era and aftermath",
-      cardCount: 3,
-      dateCreated: "Mar 28, 2026",
-      isPrivate: true,
+      visibility: "PRIVATE" as const,
+      createdAt: "2026-03-28T00:00:00Z",
       flashcards: [
-        { word: "1", definition: "definition 1" },
-        { word: "2", definition: "definition 2" },
-        { word: "3", definition: "definition 3" },
+        { id: 16, question: "Question 1", answer: "Answer 1" },
+        { id: 17, question: "Question 2", answer: "Answer 2" },
+        { id: 18, question: "Question 3", answer: "Answer 3" },
       ],
     },
   ];
@@ -106,9 +100,8 @@ export default function Search() {
               key={`${set.title}-${index}`}
               title={set.title}
               description={set.description}
-              cardCount={set.cardCount}
-              dateCreated={set.dateCreated}
-              isPrivate={set.isPrivate}
+              visibility={set.visibility}
+              createdAt={set.createdAt}
               flashcards={set.flashcards}
             />
           ))
