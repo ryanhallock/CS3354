@@ -18,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class WhattApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }

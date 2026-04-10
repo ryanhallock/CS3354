@@ -6,13 +6,12 @@ import edu.utdallas.cs3354.whatt.entity.Flashcard;
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.repository.FlashcardRepository;
 import edu.utdallas.cs3354.whatt.repository.FlashcardSetRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 public class FlashcardService {
@@ -43,8 +42,7 @@ public class FlashcardService {
         FlashcardSet set = getSetById(setId);
         assertCanAccessSet(username, set);
 
-        return flashcardRepository.findAllByFlashcardSetIdOrderByIdAsc(setId)
-                .stream()
+        return flashcardRepository.findAllByFlashcardSetIdOrderByIdAsc(setId).stream()
                 .map(this::toResponse)
                 .toList();
     }
@@ -58,7 +56,8 @@ public class FlashcardService {
 
     @Transactional
     public FlashcardResponse updateOwnCard(String username, Long id, FlashcardRequest request) {
-        Flashcard card = flashcardRepository.findByIdAndFlashcardSetOwnerUsername(id, username)
+        Flashcard card = flashcardRepository
+                .findByIdAndFlashcardSetOwnerUsername(id, username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard not found"));
 
         card.setQuestion(request.question());
@@ -68,18 +67,21 @@ public class FlashcardService {
 
     @Transactional
     public void deleteOwnCard(String username, Long id) {
-        Flashcard card = flashcardRepository.findByIdAndFlashcardSetOwnerUsername(id, username)
+        Flashcard card = flashcardRepository
+                .findByIdAndFlashcardSetOwnerUsername(id, username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard not found"));
         flashcardRepository.delete(card);
     }
 
     private FlashcardSet getSetById(Long setId) {
-        return flashcardSetRepository.findById(setId)
+        return flashcardSetRepository
+                .findById(setId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard set not found"));
     }
 
     private Flashcard getCardById(Long id) {
-        return flashcardRepository.findById(id)
+        return flashcardRepository
+                .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard not found"));
     }
 

@@ -3,14 +3,13 @@ package edu.utdallas.cs3354.whatt.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.utdallas.cs3354.whatt.security.Role;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.Instant;
-import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

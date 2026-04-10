@@ -1,10 +1,18 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import edu.utdallas.cs3354.whatt.controller.FlashcardSetController;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.FlashcardSetService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +30,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Web-layer tests for FlashcardSetController using MockMvc.
@@ -88,14 +87,12 @@ class FlashcardSetControllerTest {
     private JwtAuthFilter jwtAuthFilter;
 
     private void mockAuth() {
-        UserDetails principal = org.springframework.security.core.userdetails.User
-                .withUsername("alice")
+        UserDetails principal = org.springframework.security.core.userdetails.User.withUsername("alice")
                 .password("ignored")
                 .authorities("ROLE_USER")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                principal, null, principal.getAuthorities()
-        );
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
@@ -105,9 +102,13 @@ class FlashcardSetControllerTest {
         mockAuth();
 
         FlashcardSetResponse response = new FlashcardSetResponse(
-                1L, "CS3354 Midterm", "Software Engineering concepts", FlashcardSet.Visibility.PRIVATE,
-                "alice", java.time.Instant.now(), List.of()
-        );
+                1L,
+                "CS3354 Midterm",
+                "Software Engineering concepts",
+                FlashcardSet.Visibility.PRIVATE,
+                "alice",
+                java.time.Instant.now(),
+                List.of());
 
         doReturn(response).when(flashcardSetService).createSet(eq("alice"), any());
 
@@ -152,8 +153,7 @@ class FlashcardSetControllerTest {
     void getOwnSets_returns200() throws Exception {
         mockAuth();
         FlashcardSetResponse response = new FlashcardSetResponse(
-                1L, "My Set", "Desc", FlashcardSet.Visibility.PRIVATE, "alice", null, List.of()
-        );
+                1L, "My Set", "Desc", FlashcardSet.Visibility.PRIVATE, "alice", null, List.of());
         doReturn(List.of(response)).when(flashcardSetService).getOwnSets("alice");
 
         mockMvc.perform(get("/api/flashcardset"))
@@ -167,8 +167,7 @@ class FlashcardSetControllerTest {
     void getPublicSets_returns200() throws Exception {
         mockAuth();
         FlashcardSetResponse response = new FlashcardSetResponse(
-                2L, "Public Set", "Desc", FlashcardSet.Visibility.PUBLIC, "bob", null, List.of()
-        );
+                2L, "Public Set", "Desc", FlashcardSet.Visibility.PUBLIC, "bob", null, List.of());
         doReturn(List.of(response)).when(flashcardSetService).getPublicSets();
 
         mockMvc.perform(get("/api/flashcardset/public"))
@@ -181,8 +180,7 @@ class FlashcardSetControllerTest {
     void getSetById_returns200() throws Exception {
         mockAuth();
         FlashcardSetResponse response = new FlashcardSetResponse(
-                1L, "Target Set", "Desc", FlashcardSet.Visibility.PRIVATE, "alice", null, List.of()
-        );
+                1L, "Target Set", "Desc", FlashcardSet.Visibility.PRIVATE, "alice", null, List.of());
         doReturn(response).when(flashcardSetService).getVisibleSetById("alice", 1L);
 
         mockMvc.perform(get("/api/flashcardset/1"))
@@ -195,8 +193,7 @@ class FlashcardSetControllerTest {
     void updateSet_valid_returns200() throws Exception {
         mockAuth();
         FlashcardSetResponse response = new FlashcardSetResponse(
-                1L, "Updated Set", "New Desc", FlashcardSet.Visibility.PUBLIC, "alice", null, List.of()
-        );
+                1L, "Updated Set", "New Desc", FlashcardSet.Visibility.PUBLIC, "alice", null, List.of());
         doReturn(response).when(flashcardSetService).updateOwnSet(eq("alice"), eq(1L), any());
 
         mockMvc.perform(put("/api/flashcardset/1")
@@ -240,7 +237,6 @@ class FlashcardSetControllerTest {
         mockAuth();
         doNothing().when(flashcardSetService).deleteOwnSet("alice", 1L);
 
-        mockMvc.perform(delete("/api/flashcardset/1"))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/flashcardset/1")).andExpect(status().isNoContent());
     }
 }

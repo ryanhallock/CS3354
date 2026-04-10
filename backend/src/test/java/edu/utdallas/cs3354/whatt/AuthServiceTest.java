@@ -1,5 +1,9 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.security.JwtService;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.AuthService;
@@ -15,10 +19,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for AuthService.
@@ -54,18 +54,17 @@ class AuthServiceTest {
     @InjectMocks
     private AuthService authService;
 
-    //TC1 register delegates to UserService with Role.USER
+    // TC1 register delegates to UserService with Role.USER
 
     @Test
     @DisplayName("TC-1: register calls userService.createUser with Role.USER")
     void register_delegatesToUserServiceWithRoleUser() {
         authService.register("alice", "pass123");
 
-        verify(userService, times(1))
-                .createUser("alice", "pass123", Role.USER);
+        verify(userService, times(1)).createUser("alice", "pass123", Role.USER);
     }
 
-    //TC2 login returns token from JwtService on valid credentials
+    // TC2 login returns token from JwtService on valid credentials
 
     @Test
     @DisplayName("TC-2: login returns JWT token when credentials are valid")
@@ -84,10 +83,10 @@ class AuthServiceTest {
     @DisplayName("TC-3: login propagates BadCredentialsException from AuthenticationManager")
     void login_badCredentials_throwsBadCredentialsException() {
         doThrow(new BadCredentialsException("Bad credentials"))
-                .when(authenticationManager).authenticate(any());
+                .when(authenticationManager)
+                .authenticate(any());
 
-        assertThrows(BadCredentialsException.class,
-                () -> authService.login("alice", "wrongPass"));
+        assertThrows(BadCredentialsException.class, () -> authService.login("alice", "wrongPass"));
 
         // Token must never be generated if authentication failed
         verify(jwtService, never()).generateToken(anyString());
@@ -107,7 +106,7 @@ class AuthServiceTest {
         verify(authenticationManager).authenticate(captor.capture());
 
         UsernamePasswordAuthenticationToken captured = captor.getValue();
-        assertEquals("alice",  captured.getPrincipal());
+        assertEquals("alice", captured.getPrincipal());
         assertEquals("secret", captured.getCredentials());
     }
 }

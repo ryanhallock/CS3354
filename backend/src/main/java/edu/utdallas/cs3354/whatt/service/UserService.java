@@ -3,11 +3,10 @@ package edu.utdallas.cs3354.whatt.service;
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
 import edu.utdallas.cs3354.whatt.security.Role;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -27,7 +26,8 @@ public class UserService {
 
         // While all admins are users, Spring doesn't think that way, so we need to grant Admin both roles
         String encodedPassword = passwordEncoder.encode(rawPassword);
-        var user = new User(username, encodedPassword, role == Role.ADMIN ? Set.of(Role.ADMIN, Role.USER) : Set.of(Role.USER));
+        var user = new User(
+                username, encodedPassword, role == Role.ADMIN ? Set.of(Role.ADMIN, Role.USER) : Set.of(Role.USER));
         userRepository.save(user);
         return user;
     }

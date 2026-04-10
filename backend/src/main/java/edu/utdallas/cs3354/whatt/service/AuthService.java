@@ -14,8 +14,10 @@ public class AuthService {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+
     @Value("${jwt.expiration}")
     private long jwtExpiration;
+
     @Value("${jwt.cookie.secure}")
     private boolean cookieSecure;
 

@@ -5,6 +5,7 @@ import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetUpdateRequest;
 import edu.utdallas.cs3354.whatt.service.FlashcardSetService;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/flashcardset")
 @PreAuthorize("isAuthenticated()")
@@ -34,8 +33,8 @@ public class FlashcardSetController {
     }
 
     @PostMapping
-    public ResponseEntity<FlashcardSetResponse> createSet(@AuthenticationPrincipal UserDetails userDetails,
-                                                          @Valid @RequestBody FlashcardSetCreateRequest request) {
+    public ResponseEntity<FlashcardSetResponse> createSet(
+            @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody FlashcardSetCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(flashcardSetService.createSet(userDetails.getUsername(), request));
     }
@@ -51,21 +50,21 @@ public class FlashcardSetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FlashcardSetResponse> getById(@AuthenticationPrincipal UserDetails userDetails,
-                                                        @PathVariable Long id) {
+    public ResponseEntity<FlashcardSetResponse> getById(
+            @AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
         return ResponseEntity.ok(flashcardSetService.getVisibleSetById(userDetails.getUsername(), id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FlashcardSetResponse> updateSet(@AuthenticationPrincipal UserDetails userDetails,
-                                                          @PathVariable Long id,
-                                                          @Valid @RequestBody FlashcardSetUpdateRequest request) {
+    public ResponseEntity<FlashcardSetResponse> updateSet(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id,
+            @Valid @RequestBody FlashcardSetUpdateRequest request) {
         return ResponseEntity.ok(flashcardSetService.updateOwnSet(userDetails.getUsername(), id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSet(@AuthenticationPrincipal UserDetails userDetails,
-                                          @PathVariable Long id) {
+    public ResponseEntity<Void> deleteSet(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
         flashcardSetService.deleteOwnSet(userDetails.getUsername(), id);
         return ResponseEntity.noContent().build();
     }

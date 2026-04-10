@@ -16,8 +16,8 @@ public class WebConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
                                 "http://localhost:5173", // Vite dev
-                                "http://localhost:4173"  // Vite preview
-                        )
+                                "http://localhost:4173" // Vite preview
+                                )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowCredentials(true);
             }

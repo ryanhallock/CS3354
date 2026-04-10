@@ -1,9 +1,15 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.DatabaseUserDetailsService;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,13 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for DatabaseUserDetailsService.
@@ -92,11 +91,10 @@ class DatabaseUserDetailsServiceTest {
     void loadUserByUsername_unknownUser_throwsUsernameNotFoundException() {
         when(userRepository.findByUsername("ghost")).thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class,
-                () -> service.loadUserByUsername("ghost"));
+        assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("ghost"));
     }
 
-    //TC4 password forwarded from DB
+    // TC4 password forwarded from DB
 
     @Test
     @DisplayName("TC-4: loadUserByUsername forwards the stored (encoded) password")

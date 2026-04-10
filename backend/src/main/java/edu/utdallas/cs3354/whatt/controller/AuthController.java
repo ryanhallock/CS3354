@@ -4,6 +4,7 @@ import edu.utdallas.cs3354.whatt.dto.AuthRequest;
 import edu.utdallas.cs3354.whatt.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -38,8 +37,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody AuthRequest request,
-                                                     HttpServletResponse response) {
+    public ResponseEntity<Map<String, String>> login(
+            @Valid @RequestBody AuthRequest request, HttpServletResponse response) {
         try {
             ResponseCookie token = authService.login(request.username(), request.password());
             response.setHeader(HttpHeaders.SET_COOKIE, token.toString());
@@ -59,7 +58,8 @@ public class AuthController {
 
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, String>> logout(HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Map<String, String>> logout(
+            HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "You are not authenticated"));
         }

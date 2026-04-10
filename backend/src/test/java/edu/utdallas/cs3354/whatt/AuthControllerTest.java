@@ -1,8 +1,14 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import edu.utdallas.cs3354.whatt.controller.AuthController;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.AuthService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +24,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
 
 /**
  * Web-layer tests for AuthController using MockMvc.
@@ -62,11 +59,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AuthController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import(AuthControllerTest.TestMvcConfig.class)
-@TestPropertySource(properties = {
-        "jwt.expiration=3600000",
-        "jwt.cookie.secure=false",
-        "jwt.secret=test-secret-key-that-is-32-bytes!!"
-})
+@TestPropertySource(
+        properties = {
+            "jwt.expiration=3600000",
+            "jwt.cookie.secure=false",
+            "jwt.secret=test-secret-key-that-is-32-bytes!!"
+        })
 class AuthControllerTest {
 
     @TestConfiguration
@@ -106,7 +104,8 @@ class AuthControllerTest {
     @DisplayName("TC-2: POST /register with duplicate username returns 400 and error")
     void register_duplicateUsername_returns400() throws Exception {
         doThrow(new IllegalArgumentException("Username already exists"))
-                .when(authService).register("alice", "pass123");
+                .when(authService)
+                .register("alice", "pass123");
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -144,8 +143,12 @@ class AuthControllerTest {
     @Test
     @DisplayName("TC5: POST /login with correct credentials returns 200 and sets jwt cookie")
     void login_validCredentials_returns200WithCookie() throws Exception {
-        doReturn(ResponseCookie.from("jwt", "mocked.jwt.token").httpOnly(true).path("/").build())
-                .when(authService).login("alice", "pass123");
+        doReturn(ResponseCookie.from("jwt", "mocked.jwt.token")
+                        .httpOnly(true)
+                        .path("/")
+                        .build())
+                .when(authService)
+                .login("alice", "pass123");
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -162,7 +165,8 @@ class AuthControllerTest {
     @DisplayName("TC6: POST /login with wrong credentials returns 401")
     void login_badCredentials_returns401() throws Exception {
         doThrow(new BadCredentialsException("Bad credentials"))
-                .when(authService).login("alice", "wrong");
+                .when(authService)
+                .login("alice", "wrong");
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,19 +194,16 @@ class AuthControllerTest {
     @DisplayName("TC8: POST /logout returns 200 and clears jwt cookie (maxAge=0)")
     void logout_returns200AndClearsCookie() throws Exception {
         // Quite hacky because this route requires authentication, and we dont want to just mock for this test case.
-        UserDetails principal = org.springframework.security.core.userdetails.User
-                .withUsername("alice")
+        UserDetails principal = org.springframework.security.core.userdetails.User.withUsername("alice")
                 .password("ignored")
                 .authorities("ROLE_USER")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                principal,
-                null,
-                principal.getAuthorities()
-        );
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
 
         doReturn(ResponseCookie.from("jwt", "").path("/").maxAge(0).build())
-                .when(authService).logout("alice");
+                .when(authService)
+                .logout("alice");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         try {

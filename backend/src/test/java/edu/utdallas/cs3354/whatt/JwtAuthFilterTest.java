@@ -1,10 +1,14 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.security.JwtService;
 import edu.utdallas.cs3354.whatt.service.DatabaseUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,12 +22,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 
 /**
  * Unit tests for JwtAuthFilter.
@@ -63,21 +61,20 @@ class JwtAuthFilterTest {
     @InjectMocks
     private JwtAuthFilter filter;
 
-    private MockHttpServletRequest  request;
+    private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-    private static final UserDetails ALICE = new User(
-            "alice", "hashed",
-            List.of(new SimpleGrantedAuthority("ROLE_USER")));
+    private static final UserDetails ALICE =
+            new User("alice", "hashed", List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
     @BeforeEach
     void setUp() {
-        request  = new MockHttpServletRequest();
+        request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        SecurityContextHolder.clearContext();          // clean slate each test
+        SecurityContextHolder.clearContext(); // clean slate each test
     }
 
-    //TC1 no cookies
+    // TC1 no cookies
 
     @Test
     @DisplayName("TC-1: no cookies → SecurityContext empty, filter chain continues")
@@ -117,8 +114,8 @@ class JwtAuthFilterTest {
         filter.doFilterInternal(request, response, filterChain);
 
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals("alice",
-                SecurityContextHolder.getContext().getAuthentication().getName());
+        assertEquals(
+                "alice", SecurityContextHolder.getContext().getAuthentication().getName());
         verify(filterChain).doFilter(request, response);
     }
 
@@ -143,8 +140,8 @@ class JwtAuthFilterTest {
     @DisplayName("TC-5: SecurityContext already authenticated → filter logic skipped")
     void securityContextAlreadySet_filterSkipped() throws Exception {
         // Pre-populate the context (simulates a previous filter having authenticated)
-        var existingAuth = new org.springframework.security.authentication
-                .UsernamePasswordAuthenticationToken(ALICE, null, ALICE.getAuthorities());
+        var existingAuth = new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                ALICE, null, ALICE.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(existingAuth);
 
         request.setCookies(new Cookie("jwt", "some.token"));
@@ -162,12 +159,10 @@ class JwtAuthFilterTest {
     @DisplayName("TC-6: JwtService throws RuntimeException  exception swallowed, chain continues")
     void jwtServiceThrows_exceptionSwallowed_chainContinues() throws Exception {
         request.setCookies(new Cookie("jwt", "boom.token"));
-        when(jwtService.extractUsername("boom.token"))
-                .thenThrow(new RuntimeException("unexpected"));
+        when(jwtService.extractUsername("boom.token")).thenThrow(new RuntimeException("unexpected"));
 
         // Must not throw
-        assertDoesNotThrow(() ->
-                filter.doFilterInternal(request, response, filterChain));
+        assertDoesNotThrow(() -> filter.doFilterInternal(request, response, filterChain));
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);

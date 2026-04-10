@@ -1,9 +1,15 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.UserService;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,13 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for UserService.
@@ -65,13 +64,11 @@ class UserServiceTest {
     }
 
     private void stubEncodeAndSave() {
-        when(passwordEncoder.encode(anyString()))
-                .thenAnswer(inv -> "encoded:" + inv.getArgument(0));
-        when(userRepository.save(any(User.class)))
-                .thenAnswer(inv -> inv.getArgument(0));
+        when(passwordEncoder.encode(anyString())).thenAnswer(inv -> "encoded:" + inv.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
     }
 
-    //TC1: new USER
+    // TC1: new USER
 
     @Test
     @DisplayName("TC-1: createUser with Role.USER saves user with only USER role")
@@ -85,7 +82,7 @@ class UserServiceTest {
         assertFalse(result.isAdmin());
     }
 
-    //TC2 new ADMIN
+    // TC2 new ADMIN
 
     @Test
     @DisplayName("TC-2: createUser with Role.ADMIN saves user with both ADMIN and USER roles")
@@ -108,9 +105,7 @@ class UserServiceTest {
                 .thenReturn(Optional.of(new User("alice", "hashed", Set.of(Role.USER))));
 
         IllegalArgumentException ex = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.createUser("alice", "anyPass", Role.USER)
-        );
+                IllegalArgumentException.class, () -> userService.createUser("alice", "anyPass", Role.USER));
 
         assertEquals("Username already exists", ex.getMessage());
         verify(userRepository, never()).save(any());
@@ -131,7 +126,7 @@ class UserServiceTest {
         assertNotEquals("mySecret", result.getPassword());
     }
 
-    //TC5 save() called once
+    // TC5 save() called once
 
     @Test
     @DisplayName("TC-5: createUser calls userRepository.save() exactly once on success")

@@ -1,7 +1,7 @@
 package edu.utdallas.cs3354.whatt.service;
 
-import edu.utdallas.cs3354.whatt.dto.FlashcardResponse;
 import edu.utdallas.cs3354.whatt.dto.FlashcardRequest;
+import edu.utdallas.cs3354.whatt.dto.FlashcardResponse;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetCreateRequest;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.dto.FlashcardSetUpdateRequest;
@@ -10,13 +10,12 @@ import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.FlashcardSetRepository;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 public class FlashcardSetService {
@@ -45,16 +44,14 @@ public class FlashcardSetService {
 
     @Transactional(readOnly = true)
     public List<FlashcardSetResponse> getOwnSets(String username) {
-        return flashcardSetRepository.findAllByOwnerUsernameOrderByIdDesc(username)
-                .stream()
+        return flashcardSetRepository.findAllByOwnerUsernameOrderByIdDesc(username).stream()
                 .map(this::toResponse)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public List<FlashcardSetResponse> getPublicSets() {
-        return flashcardSetRepository.findAllByVisibilityOrderByIdDesc(FlashcardSet.Visibility.PUBLIC)
-                .stream()
+        return flashcardSetRepository.findAllByVisibilityOrderByIdDesc(FlashcardSet.Visibility.PUBLIC).stream()
                 .map(this::toResponse)
                 .toList();
     }
@@ -71,7 +68,8 @@ public class FlashcardSetService {
 
     @Transactional
     public FlashcardSetResponse updateOwnSet(String username, Long id, FlashcardSetUpdateRequest request) {
-        FlashcardSet flashcardSet = flashcardSetRepository.findByIdAndOwnerUsername(id, username)
+        FlashcardSet flashcardSet = flashcardSetRepository
+                .findByIdAndOwnerUsername(id, username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard set not found"));
 
         flashcardSet.setTitle(request.title());
@@ -83,18 +81,21 @@ public class FlashcardSetService {
 
     @Transactional
     public void deleteOwnSet(String username, Long id) {
-        FlashcardSet flashcardSet = flashcardSetRepository.findByIdAndOwnerUsername(id, username)
+        FlashcardSet flashcardSet = flashcardSetRepository
+                .findByIdAndOwnerUsername(id, username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard set not found"));
         flashcardSetRepository.delete(flashcardSet);
     }
 
     private User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+        return userRepository
+                .findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     private FlashcardSet getSetById(Long id) {
-        return flashcardSetRepository.findById(id)
+        return flashcardSetRepository
+                .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Flashcard set not found"));
     }
 
@@ -121,7 +122,6 @@ public class FlashcardSetService {
                 set.getVisibility(),
                 set.getOwner().getUsername(),
                 set.getCreatedAt(),
-                flashcards
-        );
+                flashcards);
     }
 }

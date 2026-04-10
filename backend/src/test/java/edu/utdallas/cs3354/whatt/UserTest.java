@@ -1,13 +1,12 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.security.Role;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for User.
@@ -58,15 +57,14 @@ class UserTest {
     @DisplayName("TC-4: roles set is immutable after construction")
     void roles_areImmutableAfterConstruction() {
         User user = new User("carol", "hashed", Set.of(Role.USER));
-        assertThrows(UnsupportedOperationException.class,
-                () -> user.getRoles().add(Role.ADMIN));
+        assertThrows(UnsupportedOperationException.class, () -> user.getRoles().add(Role.ADMIN));
     }
 
     @Test
     @DisplayName("TC-5: getUsername and getPassword return constructor values")
     void constructor_setsUsernameAndPassword() {
         User user = new User("dave", "s3cr3t", Set.of(Role.USER));
-        assertEquals("dave",   user.getUsername());
+        assertEquals("dave", user.getUsername());
         assertEquals("s3cr3t", user.getPassword());
     }
 }

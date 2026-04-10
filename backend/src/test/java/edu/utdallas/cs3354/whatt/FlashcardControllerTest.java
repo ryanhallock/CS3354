@@ -1,10 +1,18 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import edu.utdallas.cs3354.whatt.controller.FlashcardController;
 import edu.utdallas.cs3354.whatt.dto.FlashcardRequest;
 import edu.utdallas.cs3354.whatt.dto.FlashcardResponse;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.FlashcardService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +30,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Web-layer tests for FlashcardController using MockMvc.
@@ -84,14 +83,12 @@ class FlashcardControllerTest {
     private JwtAuthFilter jwtAuthFilter;
 
     private void mockAuth() {
-        UserDetails principal = org.springframework.security.core.userdetails.User
-                .withUsername("alice")
+        UserDetails principal = org.springframework.security.core.userdetails.User.withUsername("alice")
                 .password("ignored")
                 .authorities("ROLE_USER")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                principal, null, principal.getAuthorities()
-        );
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
@@ -197,7 +194,6 @@ class FlashcardControllerTest {
         mockAuth();
         doNothing().when(flashcardService).deleteOwnCard("alice", 100L);
 
-        mockMvc.perform(delete("/api/flashcard/100"))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/flashcard/100")).andExpect(status().isNoContent());
     }
 }
