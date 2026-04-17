@@ -33,7 +33,8 @@ public class UserService {
     }
 
     public void updateUsername(String currentUsername, String newUsername) {
-        User user = userRepository.findByUsername(currentUsername)
+        User user = userRepository
+                .findByUsername(currentUsername)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         if (currentUsername.equals(newUsername)) {
             return;
@@ -46,7 +47,8 @@ public class UserService {
     }
 
     public void updatePassword(String username, String currentPassword, String newPassword) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository
+                .findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new IllegalArgumentException("Current password is incorrect");

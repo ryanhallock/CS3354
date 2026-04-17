@@ -29,8 +29,7 @@ public class UserController {
 
     @PutMapping("/username")
     public ResponseEntity<Map<String, String>> updateUsername(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody UpdateUsernameRequest request) {
+            @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UpdateUsernameRequest request) {
         try {
             userService.updateUsername(userDetails.getUsername(), request.newUsername());
             return ResponseEntity.ok(Map.of("message", "Username updated successfully"));
@@ -41,8 +40,7 @@ public class UserController {
 
     @PutMapping("/password")
     public ResponseEntity<Map<String, String>> updatePassword(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody UpdatePasswordRequest request) {
+            @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UpdatePasswordRequest request) {
         try {
             userService.updatePassword(userDetails.getUsername(), request.currentPassword(), request.newPassword());
             return ResponseEntity.ok(Map.of("message", "Password updated successfully"));
