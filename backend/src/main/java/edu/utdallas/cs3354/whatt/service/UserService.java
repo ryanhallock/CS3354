@@ -31,4 +31,27 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
+
+    public void updateUsername(String currentUsername, String newUsername) {
+        User user = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (currentUsername.equals(newUsername)) {
+            return;
+        }
+        if (userRepository.findByUsername(newUsername).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        user.setUsername(newUsername);
+        userRepository.save(user);
+    }
+
+    public void updatePassword(String username, String currentPassword, String newPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 }
