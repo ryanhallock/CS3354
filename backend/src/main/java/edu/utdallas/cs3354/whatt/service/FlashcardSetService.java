@@ -1,10 +1,10 @@
 package edu.utdallas.cs3354.whatt.service;
 
 import edu.utdallas.cs3354.whatt.dto.request.FlashcardRequest;
-import edu.utdallas.cs3354.whatt.dto.response.FlashcardResponse;
 import edu.utdallas.cs3354.whatt.dto.request.FlashcardSetCreateRequest;
-import edu.utdallas.cs3354.whatt.dto.response.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.dto.request.FlashcardSetUpdateRequest;
+import edu.utdallas.cs3354.whatt.dto.response.FlashcardResponse;
+import edu.utdallas.cs3354.whatt.dto.response.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.entity.Flashcard;
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.entity.User;
