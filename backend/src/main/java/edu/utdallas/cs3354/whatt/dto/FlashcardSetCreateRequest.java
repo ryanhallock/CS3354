@@ -5,13 +5,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 
 public record FlashcardSetCreateRequest(
-        @NotBlank String title, @NotBlank String description,
+        @NotBlank String title,
+        @NotBlank String description,
         @NotNull FlashcardSet.Visibility visibility,
-        @NotNull @Size(min = 1) List<@Valid FlashcardRequest> flashcards
-) {
-}
-
+        @NotNull @Size(min = 1) List<@Valid FlashcardRequest> flashcards) {}

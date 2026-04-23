@@ -2,4 +2,4 @@
 
 ### Tooling
 Uses `bun` for the frontend.
-Uses 'gradle'/`gradlew` for the backend.
+Uses `gradle`/`gradlew` for the backend.

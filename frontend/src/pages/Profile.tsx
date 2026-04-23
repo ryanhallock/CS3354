@@ -1,160 +1,68 @@
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import type { CSSProperties } from 'react';
+import { useState } from "react";
 
 export default function Profile() {
-    const [profile, setProfile] = useState({
-        email: '',
-        firstName: '',
-        lastName: '',
-        profilePicture: null,
-    });
+  const [profile] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    profilePicture: null,
+  });
 
-    useEffect(() => {
-        /* Fetch the user information and set it to the useState */
-    }, [])
+  const handleLogout = () => {};
 
-    const handleLogout = () => { };
+  return (
+    <div className="box-border flex min-h-screen w-full flex-col items-stretch p-7.5 text-left">
+      <h1 className="text-primary mt-5 mb-5 justify-self-start text-[30px] font-medium">Profile</h1>
 
-    return (
-        <div style={styles.page}>
-            <h1 className="title-blue">Profile</h1>
-
-            <div style={styles.card}>
-                <div style={styles.leftColumn}>
-                    <div style={styles.profilePic}>
-                        {profile.profilePicture ? (
-                            <img
-                                src={profile.profilePicture}
-                                alt="Profile"
-                                style={styles.profileImg}
-                            />
-                        ) : (
-                            <span style={styles.picLabel}>Profile<br />Picture</span>
-                        )}
-                    </div>
-                    <button style={styles.logoutBtn} onClick={handleLogout}>
-                        Logout
-                    </button>
-                </div>
-
-                {/* Profile Info */}
-                <div style={styles.infoSection}>
-                    <div style={styles.fieldGroup}>
-                        <label style={styles.label}>Email</label>
-                        <div style={styles.field}>{profile.email}</div>
-                    </div>
-
-                    <div style={styles.fieldGroup}>
-                        <label style={styles.label}>First Name</label>
-                        <div style={styles.field}>{profile.firstName}</div>
-                    </div>
-
-                    <div style={styles.fieldGroup}>
-                        <label style={styles.label}>Last Name</label>
-                        <div style={styles.field}>{profile.lastName}</div>
-                    </div>
-                </div>
-            </div>
+      <div className="bg-surface box-border flex min-h-100 w-full flex-row gap-20 rounded-xl p-[40px_50px] shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+        <div className="flex flex-col items-start justify-between">
+          <div className="mt-2.5 flex h-45 w-45 items-center justify-center rounded-full bg-gray-200">
+            {profile.profilePicture ? (
+              <img
+                src={profile.profilePicture}
+                alt="Profile"
+                className="h-full w-full rounded-full object-cover"
+              />
+            ) : (
+              <span className="text-center text-[15px] leading-[1.4] text-[#111]">
+                Profile
+                <br />
+                Picture
+              </span>
+            )}
+          </div>
+          <button
+            className="bg-primary cursor-pointer rounded-lg border-none px-6 py-2 text-sm font-semibold text-white"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
-    );
-}
 
-const styles: { [key: string]: CSSProperties } = {
-    page: {
-        minHeight: '100vh',
-        padding: '30px',
-        fontFamily: 'sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        boxSizing: 'border-box',
-        width: '100%',
-        textAlign: 'left',
-    },
-    heading: {
-        color: '#2a2a8c',
-        fontSize: '24px',
-        fontWeight: '700',
-        marginBottom: '20px',
-        textAlign: 'left',
-    },
-    card: {
-        backgroundColor: '#ffffff',
-        borderRadius: '12px',
-        padding: '40px 50px',
-        width: '100%',
-        boxSizing: 'border-box',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '80px',
-        minHeight: '400px',
-    },
-    leftColumn: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-    },
-    profilePic: {
-        width: '180px',
-        height: '180px',
-        borderRadius: '50%',
-        backgroundColor: '#f2f2f2',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '10px',
-    },
-    profileImg: {
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        objectFit: 'cover',
-    },
-    picLabel: {
-        fontSize: '15px',
-        color: '#111',
-        textAlign: 'center',
-        lineHeight: '1.4',
-    },
-    infoSection: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '24px',
-        flex: 1,
-        marginTop: '20px',
-        maxWidth: '800px', // prevent the form fields from being overly long on ultrawide screens
-    },
-    fieldGroup: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-    },
-    label: {
-        fontSize: '16px',
-        color: '#111',
-        fontWeight: '400',
-    },
-    field: {
-        backgroundColor: '#f2f2f2',
-        borderRadius: '8px',
-        padding: '12px 14px',
-        fontSize: '16px',
-        color: '#333',
-        minHeight: '24px',
-        width: '100%',
-        boxSizing: 'border-box',
-    },
-    logoutBtn: {
-        backgroundColor: '#2a2a8c',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '8px',
-        padding: '8px 24px',
-        fontSize: '14px',
-        fontWeight: '600',
-        cursor: 'pointer',
-    },
-};
+        {/* Profile Info */}
+        <div className="mt-5 flex max-w-200 flex-1 flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <label className="text-base font-normal text-[#111]">Email</label>
+            <div className="box-border min-h-6 w-full rounded-lg bg-gray-100 px-3.5 py-3 text-base text-[#333]">
+              {profile.email}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-base font-normal text-[#111]">First Name</label>
+            <div className="box-border min-h-6 w-full rounded-lg bg-gray-100 px-3.5 py-3 text-base text-[#333]">
+              {profile.firstName}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-base font-normal text-[#111]">Last Name</label>
+            <div className="box-border min-h-6 w-full rounded-lg bg-gray-100 px-3.5 py-3 text-base text-[#333]">
+              {profile.lastName}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

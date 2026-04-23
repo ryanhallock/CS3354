@@ -1,20 +1,30 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import edu.utdallas.cs3354.whatt.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import edu.utdallas.cs3354.whatt.security.JwtService;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for JwtService.
- * test cases
+ * input values and specification
+ *   generateToken(username : String)
+ *     valid        : non-blank username generates signed JWT
+ *   extractUsername(token : String)
+ *     valid        : signed, non-expired JWT returns subject
+ *     invalid      : null, blank, malformed, tampered, expired token
+ *     exceptional  : invalid inputs should be handled by returning null
+ *   isTokenValid(token : String)
+ *     valid        : signed, non-expired JWT returns true
+ *     invalid      : null, malformed, tampered, expired token returns false
+ * scenario candidates and expected output
  *  #   method            input                               expected
  *  1   generateToken     "alice"                             non-null, non-blank JWT string
- *  2   generateToken     "alice" x2                         two distinct tokens (iat differs)
- *  3   extractUsername   token from generateToken           alice
+ *  2   generateToken     "alice" x2                          two distinct tokens (iat differs)
+ *  3   extractUsername   token from generateToken            alice
  *  4   extractUsername   null                                null (no exception)
  *  5   extractUsername   ""                                  null (no exception)
  *  6   extractUsername   "not.a.jwt"                         null (no exception)
@@ -25,21 +35,24 @@ import static org.junit.jupiter.api.Assertions.*;
  * 11   isTokenValid      garbage string                      false
  * 12   isTokenValid      tampered token                      false
  * 13   isTokenValid      expired token                       false
+ * narrowed concrete values used in tests
+ *  - secret: "test-secret-key-that-is-32-bytes!!"
+ *  - expirations: 3600000L (valid), -1000L (expired)
+ *  - username: "alice"
+ *  - malformed tokens: "not.a.jwt.token", "garbage.token.value"
  */
 class JwtServiceTest {
 
     // 32-byte secret
-    private static final String SECRET =
-            "test-secret-key-that-is-32-bytes!!";
-    private static final long VALID_EXPIRATION    = 3_600_000L; // 1 hour
-    private static final long EXPIRED_EXPIRATION  = -1000L;     // already expired
+    private static final String SECRET = "test-secret-key-that-is-32-bytes!!";
+    private static final long VALID_EXPIRATION = 3_600_000L; // 1 hour
+    private static final long EXPIRED_EXPIRATION = -1000L; // already expired
 
     private JwtService jwtService;
 
-
     private JwtService buildService(long expiration) {
         JwtService svc = new JwtService();
-        ReflectionTestUtils.setField(svc, "secret",     SECRET);
+        ReflectionTestUtils.setField(svc, "secret", SECRET);
         ReflectionTestUtils.setField(svc, "expiration", expiration);
         // @PostConstruct init() called manually in unit tests
         ReflectionTestUtils.invokeMethod(svc, "init");
@@ -61,21 +74,20 @@ class JwtServiceTest {
         assertNotNull(token);
         assertFalse(token.isBlank());
         // JWT format: three Base64-url segments separated by dots
-        assertEquals(3, token.split("\\.").length,
-                "Token should have 3 dot-separated segments");
+        assertEquals(3, token.split("\\.").length, "Token should have 3 dot-separated segments");
     }
 
     @Test
     @DisplayName("TC-2: generateToken called twice produces distinct tokens")
     void generateToken_calledTwice_producesDistinctTokens() throws InterruptedException {
         String t1 = jwtService.generateToken("alice");
-        Thread.sleep(10); // ensure iat differs
+        Thread.sleep(1000); // ensure iat differs
         String t2 = jwtService.generateToken("alice");
 
         assertNotEquals(t1, t2, "Tokens issued at different times must differ");
     }
 
-    //extractUsername
+    // extractUsername
 
     @Test
     @DisplayName("TC-3: extractUsername returns correct subject from valid token")
@@ -106,7 +118,7 @@ class JwtServiceTest {
     @Test
     @DisplayName("TC-7: extractUsername with tampered signature returns null")
     void extractUsername_tamperedSignature_returnsNull() {
-        String token  = jwtService.generateToken("alice");
+        String token = jwtService.generateToken("alice");
         String tampered = token.substring(0, token.lastIndexOf('.') + 1) + "INVALIDSIG";
 
         assertNull(jwtService.extractUsername(tampered));
@@ -146,7 +158,7 @@ class JwtServiceTest {
     @Test
     @DisplayName("TC-12: isTokenValid returns false for tampered token")
     void isTokenValid_tampered_returnsFalse() {
-        String token    = jwtService.generateToken("alice");
+        String token = jwtService.generateToken("alice");
         String tampered = token.substring(0, token.lastIndexOf('.') + 1) + "BADSIG";
 
         assertFalse(jwtService.isTokenValid(tampered));

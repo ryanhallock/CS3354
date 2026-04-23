@@ -1,9 +1,15 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.DatabaseUserDetailsService;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,14 +20,26 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-
+/**
+ * Unit tests for DatabaseUserDetailsService.
+ * input values and specification
+ *   loadUserByUsername(username : String)
+ *     valid        : username exists in repository
+ *     invalid      : username does not exist
+ *     exceptional  : invalid path throws UsernameNotFoundException
+ *   authority mapping specification
+ *     Role.USER  -> "ROLE_USER"
+ *     Role.ADMIN -> "ROLE_ADMIN" (admins may also include ROLE_USER)
+ * scenario candidates and expected output
+ *  #   input / scenario                         expected
+ *  1   existing USER record                     UserDetails contains username and ROLE_USER authority
+ *  2   existing ADMIN+USER record               UserDetails contains ROLE_ADMIN and ROLE_USER authorities
+ *  3   unknown username                         UsernameNotFoundException
+ *  4   existing encoded password in DB          UserDetails password equals stored encoded value
+ * narrowed concrete values used in tests
+ *  - usernames: "alice", "bob", "ghost", "carol"
+ *  - stored passwords: "hashed", "$2a$10$encodedHash"
+ */
 @ExtendWith(MockitoExtension.class)
 class DatabaseUserDetailsServiceTest {
 
@@ -73,11 +91,10 @@ class DatabaseUserDetailsServiceTest {
     void loadUserByUsername_unknownUser_throwsUsernameNotFoundException() {
         when(userRepository.findByUsername("ghost")).thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class,
-                () -> service.loadUserByUsername("ghost"));
+        assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("ghost"));
     }
 
-    //TC4 password forwarded from DB
+    // TC4 password forwarded from DB
 
     @Test
     @DisplayName("TC-4: loadUserByUsername forwards the stored (encoded) password")

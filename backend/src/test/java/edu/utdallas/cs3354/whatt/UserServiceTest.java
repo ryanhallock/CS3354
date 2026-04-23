@@ -1,9 +1,15 @@
 package edu.utdallas.cs3354.whatt;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
 import edu.utdallas.cs3354.whatt.security.Role;
 import edu.utdallas.cs3354.whatt.service.UserService;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,13 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for UserService.
@@ -62,19 +61,19 @@ class UserServiceTest {
     void setUp() {
         // Default: username is NOT taken
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
-        // Simulate encoding: prefix with "encoded:"
-        when(passwordEncoder.encode(anyString()))
-                .thenAnswer(inv -> "encoded:" + inv.getArgument(0));
-        // Return the saved entity unchanged
-        when(userRepository.save(any(User.class)))
-                .thenAnswer(inv -> inv.getArgument(0));
     }
 
-    //TC1: new USER
+    private void stubEncodeAndSave() {
+        when(passwordEncoder.encode(anyString())).thenAnswer(inv -> "encoded:" + inv.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+    }
+
+    // TC1: new USER
 
     @Test
     @DisplayName("TC-1: createUser with Role.USER saves user with only USER role")
     void createUser_roleUser_savedWithUserRoleOnly() {
+        stubEncodeAndSave();
         User result = userService.createUser("alice", "pass123", Role.USER);
 
         assertNotNull(result);
@@ -83,11 +82,12 @@ class UserServiceTest {
         assertFalse(result.isAdmin());
     }
 
-    //TC2 new ADMIN
+    // TC2 new ADMIN
 
     @Test
     @DisplayName("TC-2: createUser with Role.ADMIN saves user with both ADMIN and USER roles")
     void createUser_roleAdmin_savedWithAdminAndUserRoles() {
+        stubEncodeAndSave();
         User result = userService.createUser("bob", "adminPass", Role.ADMIN);
 
         assertNotNull(result);
@@ -105,9 +105,7 @@ class UserServiceTest {
                 .thenReturn(Optional.of(new User("alice", "hashed", Set.of(Role.USER))));
 
         IllegalArgumentException ex = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.createUser("alice", "anyPass", Role.USER)
-        );
+                IllegalArgumentException.class, () -> userService.createUser("alice", "anyPass", Role.USER));
 
         assertEquals("Username already exists", ex.getMessage());
         verify(userRepository, never()).save(any());
@@ -118,6 +116,7 @@ class UserServiceTest {
     @Test
     @DisplayName("TC-4: createUser encodes the raw password before persisting")
     void createUser_passwordIsEncoded() {
+        stubEncodeAndSave();
         User result = userService.createUser("carol", "mySecret", Role.USER);
 
         // PasswordEncoder must be called with the raw password
@@ -127,11 +126,12 @@ class UserServiceTest {
         assertNotEquals("mySecret", result.getPassword());
     }
 
-    //TC5 save() called once
+    // TC5 save() called once
 
     @Test
     @DisplayName("TC-5: createUser calls userRepository.save() exactly once on success")
     void createUser_repositorySaveCalledOnce() {
+        stubEncodeAndSave();
         userService.createUser("dave", "pass", Role.USER);
 
         verify(userRepository, times(1)).save(any(User.class));
