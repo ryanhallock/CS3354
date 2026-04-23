@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WhattApplication {
 
-	static void main(String[] args) {
-		SpringApplication.run(WhattApplication.class, args);
-	}
-
+    static void main(String[] args) {
+        SpringApplication.run(WhattApplication.class, args);
+    }
 }

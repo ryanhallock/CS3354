@@ -2,13 +2,12 @@ package edu.utdallas.cs3354.whatt.service;
 
 import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.repository.UserRepository;
+import java.util.stream.Collectors;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class DatabaseUserDetailsService implements UserDetailsService {
@@ -21,7 +20,8 @@ public class DatabaseUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository
+                .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
@@ -29,7 +29,6 @@ public class DatabaseUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 user.getRoles().stream()
                         .map(it -> new SimpleGrantedAuthority(it.getPrefixed()))
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList()));
     }
 }

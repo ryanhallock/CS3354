@@ -3,13 +3,16 @@ package edu.utdallas.cs3354.whatt.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.utdallas.cs3354.whatt.security.Role;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -31,6 +34,10 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
     public User(String username, String password, Set<Role> roles) {
         this.username = username;

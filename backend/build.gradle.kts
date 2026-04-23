@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "4.0.5"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("com.diffplug.spotless") version "8.4.0"
 }
 
 group = "edu.utdallas.cs3354"
@@ -25,8 +26,10 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
@@ -45,4 +48,13 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+spotless {
+	java {
+		palantirJavaFormat()
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
 }
