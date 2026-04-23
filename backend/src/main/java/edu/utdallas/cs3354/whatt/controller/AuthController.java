@@ -1,6 +1,6 @@
 package edu.utdallas.cs3354.whatt.controller;
 
-import edu.utdallas.cs3354.whatt.dto.AuthRequest;
+import edu.utdallas.cs3354.whatt.dto.request.AuthRequest;
 import edu.utdallas.cs3354.whatt.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

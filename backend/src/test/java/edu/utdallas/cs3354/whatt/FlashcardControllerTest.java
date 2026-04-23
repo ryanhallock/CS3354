@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import edu.utdallas.cs3354.whatt.controller.FlashcardController;
-import edu.utdallas.cs3354.whatt.dto.FlashcardRequest;
-import edu.utdallas.cs3354.whatt.dto.FlashcardResponse;
+import edu.utdallas.cs3354.whatt.dto.request.FlashcardRequest;
+import edu.utdallas.cs3354.whatt.dto.response.FlashcardResponse;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.FlashcardService;
 import java.util.List;

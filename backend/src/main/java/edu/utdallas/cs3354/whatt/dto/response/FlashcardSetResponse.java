@@ -1,4 +1,4 @@
-package edu.utdallas.cs3354.whatt.dto;
+package edu.utdallas.cs3354.whatt.dto.response;
 
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import java.time.Instant;

@@ -1,8 +1,8 @@
 package edu.utdallas.cs3354.whatt.controller;
 
-import edu.utdallas.cs3354.whatt.dto.FlashcardSetCreateRequest;
-import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
-import edu.utdallas.cs3354.whatt.dto.FlashcardSetUpdateRequest;
+import edu.utdallas.cs3354.whatt.dto.request.FlashcardSetCreateRequest;
+import edu.utdallas.cs3354.whatt.dto.response.FlashcardSetResponse;
+import edu.utdallas.cs3354.whatt.dto.request.FlashcardSetUpdateRequest;
 import edu.utdallas.cs3354.whatt.service.FlashcardSetService;
 import jakarta.validation.Valid;
 import java.util.List;
