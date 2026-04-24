@@ -18,7 +18,7 @@ public class WebConfig {
                                 "http://localhost:5173", // Vite dev
                                 "http://localhost:4173" // Vite preview
                                 )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowCredentials(true);
             }
         };
