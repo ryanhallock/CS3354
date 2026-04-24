@@ -3,8 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const SETTINGS_QUERY_KEY = ["settings"];
 
 export interface UserSettings {
-  id: number;
-  userId: string;
   textSize: "small" | "medium" | "large" | "x-large";
   theme: "light" | "dark" | "system";
 }

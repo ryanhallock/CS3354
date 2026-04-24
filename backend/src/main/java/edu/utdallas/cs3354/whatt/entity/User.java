@@ -1,6 +1,7 @@
 package edu.utdallas.cs3354.whatt.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.utdallas.cs3354.whatt.entity.embedded.UserSettings;
 import edu.utdallas.cs3354.whatt.security.Role;
 import jakarta.persistence.*;
 import java.time.Instant;
@@ -34,6 +35,10 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @Embedded
+    @Column(nullable = false)
+    private UserSettings preferences = new UserSettings();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

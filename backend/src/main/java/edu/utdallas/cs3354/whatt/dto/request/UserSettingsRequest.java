@@ -1,23 +1,15 @@
 package edu.utdallas.cs3354.whatt.dto.request;
 
-public class UserSettingsRequest {
+import edu.utdallas.cs3354.whatt.entity.embedded.settings.TextSize;
+import edu.utdallas.cs3354.whatt.entity.embedded.settings.Theme;
+import jakarta.annotation.Nullable;
 
-    private String textSize; // "small" | "medium" | "large" | "x-large"
-    private String theme; // "light" | "dark" | "system"
+public record UserSettingsRequest(
+        @Nullable Theme theme, @Nullable TextSize textSize) {
 
-    public String getTextSize() {
-        return textSize;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTextSize(String textSize) {
-        this.textSize = textSize;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public UserSettingsRequest {
+        if (theme == null && textSize == null) {
+            throw new IllegalArgumentException("Either theme or textSize must be provided");
+        }
     }
 }
