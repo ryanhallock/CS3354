@@ -57,7 +57,7 @@ export default function Settings() {
           {TEXT_SIZES.map((size) => (
             <Button
               key={size}
-              variant={settings?.textSize === size ? "default" : "outline"}
+              variant={settings?.textSize === size ? "primary" : "outline"}
               disabled={updateTextSize.isPending}
               onClick={() => updateTextSize.mutate(size)}
             >
@@ -77,7 +77,7 @@ export default function Settings() {
           {THEMES.map((theme) => (
             <Button
               key={theme}
-              variant={settings?.theme === theme ? "default" : "outline"}
+              variant={settings?.theme === theme ? "primary" : "outline"}
               disabled={updateSettings.isPending}
               onClick={() => updateSettings.mutate({ theme })}
             >
