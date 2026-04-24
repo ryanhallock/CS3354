@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import edu.utdallas.cs3354.whatt.controller.FlashcardSetController;
-import edu.utdallas.cs3354.whatt.dto.FlashcardSetResponse;
+import edu.utdallas.cs3354.whatt.dto.response.FlashcardSetResponse;
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.FlashcardSetService;

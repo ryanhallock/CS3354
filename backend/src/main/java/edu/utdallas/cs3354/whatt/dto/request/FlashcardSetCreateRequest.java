@@ -1,4 +1,4 @@
-package edu.utdallas.cs3354.whatt.dto;
+package edu.utdallas.cs3354.whatt.dto.request;
 
 import edu.utdallas.cs3354.whatt.entity.FlashcardSet;
 import jakarta.validation.Valid;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
-public record FlashcardSetUpdateRequest(
+public record FlashcardSetCreateRequest(
         @NotBlank String title,
         @NotBlank String description,
         @NotNull FlashcardSet.Visibility visibility,

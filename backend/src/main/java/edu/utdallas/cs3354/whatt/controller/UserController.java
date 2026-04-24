@@ -1,7 +1,7 @@
 package edu.utdallas.cs3354.whatt.controller;
 
-import edu.utdallas.cs3354.whatt.dto.UpdatePasswordRequest;
-import edu.utdallas.cs3354.whatt.dto.UpdateUsernameRequest;
+import edu.utdallas.cs3354.whatt.dto.request.UpdatePasswordRequest;
+import edu.utdallas.cs3354.whatt.dto.request.UpdateUsernameRequest;
 import edu.utdallas.cs3354.whatt.service.UserService;
 import jakarta.validation.Valid;
 import java.util.Map;
