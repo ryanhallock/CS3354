@@ -23,7 +23,7 @@ export const useSettings = (enabled: boolean = true) => {
       if (!res.ok) throw new Error((data as { error?: string }).error ?? "Failed to load settings");
       return data;
     },
-    enabled,          // ← only runs when true
+    enabled, // ← only runs when true
     retry: false,
     staleTime: 5 * 60 * 1000,
   });
@@ -52,7 +52,8 @@ export const useSettings = (enabled: boolean = true) => {
         credentials: "include",
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error((data as { error?: string }).error ?? "Failed to update text size");
+      if (!res.ok)
+        throw new Error((data as { error?: string }).error ?? "Failed to update text size");
       return data as UserSettings;
     },
     onSuccess: (data) => {

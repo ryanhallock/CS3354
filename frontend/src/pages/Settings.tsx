@@ -10,7 +10,12 @@ const THEMES = ["light", "dark", "system"] as const;
 
 export default function Settings() {
   const { user, isLoading: isUserLoading } = useAuth();
-  const { settings, isLoading: isSettingsLoading, updateTextSize, updateSettings } = useSettings(!!user);
+  const {
+    settings,
+    isLoading: isSettingsLoading,
+    updateTextSize,
+    updateSettings,
+  } = useSettings(!!user);
 
   // Apply text size
   useEffect(() => {
@@ -40,12 +45,12 @@ export default function Settings() {
   }
 
   return (
-    <div className="bg-surface mx-auto my-5 max-w-130 rounded-[10px] border border-border p-5 shadow-sm">
+    <div className="bg-surface border-border mx-auto my-5 max-w-130 rounded-[10px] border p-5 shadow-sm">
       <h2 className="text-heading mb-6 text-2xl font-bold">Settings</h2>
 
       {/* Text Size */}
       <section className="mb-6">
-        <h3 className="text-heading mb-2 text-sm font-semibold uppercase tracking-wide">
+        <h3 className="text-heading mb-2 text-sm font-semibold tracking-wide uppercase">
           Text Size
         </h3>
         <div className="flex gap-2">
@@ -67,7 +72,7 @@ export default function Settings() {
 
       {/* Theme */}
       <section className="mb-6">
-        <h3 className="text-heading mb-2 text-sm font-semibold uppercase tracking-wide">Theme</h3>
+        <h3 className="text-heading mb-2 text-sm font-semibold tracking-wide uppercase">Theme</h3>
         <div className="flex gap-2">
           {THEMES.map((theme) => (
             <Button

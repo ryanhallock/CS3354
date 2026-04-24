@@ -33,7 +33,7 @@ export function Header() {
               Profile
             </Button>
             <Button variant="outline" onClick={() => navigate("/settings")}>
-            Settings
+              Settings
             </Button>
             <Button
               onClick={() => logout.mutate(undefined, { onSuccess: () => navigate("/") })}
