@@ -9,8 +9,8 @@ import Home from "@/pages/Home";
 import MyFlashcards from "@/pages/MyFlashcards";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/Search";
-import StudyView from "@/pages/StudyView";
 import Settings from "@/pages/Settings";
+import StudyView from "@/pages/StudyView";
 
 function App() {
   return (
