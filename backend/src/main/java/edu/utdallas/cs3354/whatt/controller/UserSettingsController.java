@@ -24,8 +24,7 @@ public class UserSettingsController {
     // GET /api/settings
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserSettingsResponse> getSettings(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<UserSettingsResponse> getSettings(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(service.getSettings(userDetails.getUsername()));
     }
 
@@ -33,8 +32,7 @@ public class UserSettingsController {
     @PutMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserSettingsResponse> updateSettings(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody UserSettingsRequest request) {
+            @AuthenticationPrincipal UserDetails userDetails, @RequestBody UserSettingsRequest request) {
         return ResponseEntity.ok(service.updateSettings(userDetails.getUsername(), request));
     }
 
@@ -42,8 +40,7 @@ public class UserSettingsController {
     @PatchMapping("/text-size")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserSettingsResponse> updateTextSize(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam String size) {
+            @AuthenticationPrincipal UserDetails userDetails, @RequestParam String size) {
         UserSettingsRequest request = new UserSettingsRequest();
         request.setTextSize(size);
         return ResponseEntity.ok(service.updateSettings(userDetails.getUsername(), request));

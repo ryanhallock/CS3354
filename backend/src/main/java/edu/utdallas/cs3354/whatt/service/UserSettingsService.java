@@ -18,17 +18,15 @@ public class UserSettingsService {
     }
 
     public UserSettingsResponse getSettings(String username) {
-        UserSettings settings = repository.findByUserId(username)
-                .orElseGet(() -> createDefaultSettings(username));
+        UserSettings settings = repository.findByUserId(username).orElseGet(() -> createDefaultSettings(username));
         return toResponse(settings);
     }
 
     public UserSettingsResponse updateSettings(String username, UserSettingsRequest request) {
-        UserSettings settings = repository.findByUserId(username)
-                .orElseGet(() -> createDefaultSettings(username));
+        UserSettings settings = repository.findByUserId(username).orElseGet(() -> createDefaultSettings(username));
 
         if (request.getTextSize() != null) settings.setTextSize(request.getTextSize());
-        if (request.getTheme() != null)    settings.setTheme(request.getTheme());
+        if (request.getTheme() != null) settings.setTheme(request.getTheme());
 
         return toResponse(repository.save(settings));
     }

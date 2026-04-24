@@ -21,19 +21,35 @@ public class UserSettings {
     @Column(nullable = false)
     private String theme = "light";
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getUserId() { return userId; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public String getTextSize() { return textSize; }
+    public String getTextSize() {
+        return textSize;
+    }
 
-    public String getTheme() { return theme; }
+    public String getTheme() {
+        return theme;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public void setTextSize(String textSize) { this.textSize = textSize; }
+    public void setTextSize(String textSize) {
+        this.textSize = textSize;
+    }
 
-    public void setTheme(String theme) { this.theme = theme; }
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 }

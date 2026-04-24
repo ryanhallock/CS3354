@@ -14,11 +14,19 @@ public class UserSettingsResponse {
         this.theme = theme;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getUserId() { return userId; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public String getTextSize() { return textSize; }
+    public String getTextSize() {
+        return textSize;
+    }
 
-    public String getTheme() { return theme; }
+    public String getTheme() {
+        return theme;
+    }
 }
