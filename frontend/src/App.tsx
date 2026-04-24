@@ -10,6 +10,7 @@ import MyFlashcards from "@/pages/MyFlashcards";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/Search";
 import StudyView from "@/pages/StudyView";
+import Settings from "@/pages/Settings";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/create" element={<Create />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/study" element={<StudyView />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
 
           {/* Fallback */}

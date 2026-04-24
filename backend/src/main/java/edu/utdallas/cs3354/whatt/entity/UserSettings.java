@@ -21,7 +21,6 @@ public class UserSettings {
     @Column(nullable = false)
     private String theme = "light";
 
-
     public Long getId() { return id; }
 
     public String getUserId() { return userId; }
@@ -29,7 +28,6 @@ public class UserSettings {
     public String getTextSize() { return textSize; }
 
     public String getTheme() { return theme; }
-
 
     public void setId(Long id) { this.id = id; }
 

@@ -17,15 +17,15 @@ public class UserSettingsService {
         this.repository = repository;
     }
 
-    public UserSettingsResponse getSettings(String userId) {
-        UserSettings settings = repository.findByUserId(userId)
-                .orElseGet(() -> createDefaultSettings(userId));
+    public UserSettingsResponse getSettings(String username) {
+        UserSettings settings = repository.findByUserId(username)
+                .orElseGet(() -> createDefaultSettings(username));
         return toResponse(settings);
     }
 
-    public UserSettingsResponse updateSettings(String userId, UserSettingsRequest request) {
-        UserSettings settings = repository.findByUserId(userId)
-                .orElseGet(() -> createDefaultSettings(userId));
+    public UserSettingsResponse updateSettings(String username, UserSettingsRequest request) {
+        UserSettings settings = repository.findByUserId(username)
+                .orElseGet(() -> createDefaultSettings(username));
 
         if (request.getTextSize() != null) settings.setTextSize(request.getTextSize());
         if (request.getTheme() != null)    settings.setTheme(request.getTheme());
@@ -33,9 +33,9 @@ public class UserSettingsService {
         return toResponse(repository.save(settings));
     }
 
-    private UserSettings createDefaultSettings(String userId) {
+    private UserSettings createDefaultSettings(String username) {
         UserSettings s = new UserSettings();
-        s.setUserId(userId);
+        s.setUserId(username);
         return repository.save(s);
     }
 

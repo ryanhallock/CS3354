@@ -32,6 +32,9 @@ export function Header() {
             <Button variant="outline" onClick={() => navigate("/profile")}>
               Profile
             </Button>
+            <Button variant="outline" onClick={() => navigate("/settings")}>
+            Settings
+            </Button>
             <Button
               onClick={() => logout.mutate(undefined, { onSuccess: () => navigate("/") })}
               disabled={logout.isPending}

@@ -11,6 +11,8 @@
   --color-heading: #08060d;
 
   --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+
+  --font-size-card: 18px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,4 +45,13 @@ body {
   letter-spacing: 0.18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  [data-text-size="small"]   { --font-size-card: 14px; }
+  [data-text-size="medium"]  { --font-size-card: 18px; }
+  [data-text-size="large"]   { --font-size-card: 22px; }
+  [data-text-size="x-large"] { --font-size-card: 28px; }
+
+  .flashcard-text {
+    font-size: var(--font-size-card);
+    }
 }

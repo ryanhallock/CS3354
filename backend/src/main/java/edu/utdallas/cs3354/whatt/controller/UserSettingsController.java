@@ -5,6 +5,9 @@ import edu.utdallas.cs3354.whatt.dto.response.UserSettingsResponse;
 import edu.utdallas.cs3354.whatt.service.UserSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,27 +21,31 @@ public class UserSettingsController {
         this.service = service;
     }
 
-    // GET /api/settings/{userId}
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserSettingsResponse> getSettings(@PathVariable String userId) {
-        return ResponseEntity.ok(service.getSettings(userId));
+    // GET /api/settings
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserSettingsResponse> getSettings(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(service.getSettings(userDetails.getUsername()));
     }
 
-    // PUT /api/settings/{userId}
-    @PutMapping("/{userId}")
+    // PUT /api/settings
+    @PutMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserSettingsResponse> updateSettings(
-            @PathVariable String userId,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody UserSettingsRequest request) {
-        return ResponseEntity.ok(service.updateSettings(userId, request));
+        return ResponseEntity.ok(service.updateSettings(userDetails.getUsername(), request));
     }
 
-    // PATCH /api/settings/{userId}/text-size
-    @PatchMapping("/{userId}/text-size")
+    // PATCH /api/settings/text-size
+    @PatchMapping("/text-size")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserSettingsResponse> updateTextSize(
-            @PathVariable String userId,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam String size) {
         UserSettingsRequest request = new UserSettingsRequest();
         request.setTextSize(size);
-        return ResponseEntity.ok(service.updateSettings(userId, request));
+        return ResponseEntity.ok(service.updateSettings(userDetails.getUsername(), request));
     }
 }
