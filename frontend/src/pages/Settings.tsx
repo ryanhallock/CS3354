@@ -40,7 +40,7 @@ export default function Settings() {
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
-    const message = err instanceof Error ? err.message : "Failed to update password";
+      const message = err instanceof Error ? err.message : "Failed to update password";
       setPasswordError(message);
     }
   };
