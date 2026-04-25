@@ -128,7 +128,7 @@ export default function Settings() {
         <h3 className="text-heading mb-2 text-sm font-semibold tracking-wide uppercase">
           Change Password
         </h3>
-        <div className="flex flex-col gap-3 max-w-sm">
+        <div className="flex max-w-sm flex-col gap-3">
           <input
             type="password"
             placeholder="Current password"
