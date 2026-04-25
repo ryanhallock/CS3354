@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/Button";
@@ -9,6 +9,41 @@ const TEXT_SIZES = ["small", "medium", "large", "x-large"] as const;
 const THEMES = ["light", "dark", "system"] as const;
 
 export default function Settings() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+
+  const handlePasswordChange = async () => {
+    setPasswordError("");
+    setPasswordSuccess("");
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New passwords don't match!");
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPasswordError("New password must be at least 6 characters.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/user/password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? "Failed to update password");
+      setPasswordSuccess("Password updated successfully!");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to update password";
+      setPasswordError(message);
+    }
+  };
   const { user, isLoading: isUserLoading } = useAuth();
   const {
     settings,
@@ -88,6 +123,38 @@ export default function Settings() {
         {updateSettings.isError && (
           <p className="mt-2 text-sm text-red-500">{updateSettings.error?.message}</p>
         )}
+      </section>
+      {/* Change Password */}
+      <section className="mb-6">
+        <h3 className="text-heading mb-2 text-sm font-semibold tracking-wide uppercase">
+          Change Password
+        </h3>
+        <div className="flex max-w-sm flex-col gap-3">
+          <input
+            type="password"
+            placeholder="Current password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            className="border-border rounded-lg border px-3 py-2 text-sm"
+          />
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="border-border rounded-lg border px-3 py-2 text-sm"
+          />
+          <input
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="border-border rounded-lg border px-3 py-2 text-sm"
+          />
+          {passwordError && <p className="text-sm text-red-500">{passwordError}</p>}
+          {passwordSuccess && <p className="text-sm text-green-500">{passwordSuccess}</p>}
+          <Button onClick={handlePasswordChange}>Update Password</Button>
+        </div>
       </section>
     </div>
   );

@@ -25,17 +25,24 @@ export default function Home() {
       <section className="border-border flex border-t text-left max-lg:flex-col max-lg:text-center">
         <div className="border-border max-lg:border-border flex-1 border-r p-8 max-lg:border-r-0 max-lg:border-b max-lg:p-[24px_20px]">
           <h2 className="mb-2 text-2xl font-semibold">1. Upload your slideshow</h2>
-          <p className="text-text">Watch AI transform it into interactive flashcards!</p>
+          <p className="text-text">
+            Upload a PowerPoint or PDF and we'll generate flashcards automatically!
+          </p>
           <br />
           <h2 className="mb-2 text-2xl font-semibold">
             2. Organize your sets by class or category
           </h2>
-          <p className="text-text">Watch AI transform it into interactive flashcards!</p>
+          <p className="text-text">
+            Keep your study materials tidy by grouping flashcard sets into classes or custom
+            categories!
+          </p>
           <br />
           <h2 className="mb-2 text-2xl font-semibold">
             3. Study your own sets or search for others
           </h2>
-          <p className="text-text">Watch AI transform it into interactive flashcards!</p>
+          <p className="text-text">
+            Practice with your own sets or discover what other students have already made!
+          </p>
         </div>
 
         <div className="flex-1 p-8 max-lg:p-[24px_20px]">
