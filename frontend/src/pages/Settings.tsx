@@ -39,8 +39,9 @@ export default function Settings() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (err: any) {
-      setPasswordError(err.message);
+    } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to update password";
+      setPasswordError(message);
     }
   };
   const { user, isLoading: isUserLoading } = useAuth();
