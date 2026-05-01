@@ -37,7 +37,8 @@ export default function SetView() {
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5">
         {classFolder.flashcardSets?.map((set: FlashcardSetResponse, index: number) => (
           <FlashcardSetCard
-            key={index}
+            key={set.id || index}
+            id={set.id}
             title={set.title}
             description={set.description}
             visibility={set.visibility}

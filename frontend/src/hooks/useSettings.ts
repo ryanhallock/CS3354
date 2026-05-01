@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const SETTINGS_QUERY_KEY = ["settings"];
 
 export interface UserSettings {
-  textSize: "small" | "medium" | "large" | "x-large";
-  theme: "light" | "dark" | "system";
+  textSize: "SMALL" | "MEDIUM" | "LARGE" | "X_LARGE";
+  theme: "LIGHT" | "DARK" | "SYSTEM";
 }
 
 export const useSettings = (enabled: boolean = true) => {
@@ -45,7 +45,7 @@ export const useSettings = (enabled: boolean = true) => {
 
   const updateTextSizeMutation = useMutation({
     mutationFn: async (size: UserSettings["textSize"]) => {
-      const res = await fetch(`/api/settings/text-size?size=${size}`, {
+      const res = await fetch(`/api/settings/text-size?textSize=${size}`, {
         method: "PATCH",
         credentials: "include",
       });

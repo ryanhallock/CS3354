@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/hooks/useAuth";
 import { useSettings } from "@/hooks/useSettings";
 
-const TEXT_SIZES = ["small", "medium", "large", "x-large"] as const;
-const THEMES = ["light", "dark", "system"] as const;
+const TEXT_SIZES = ["SMALL", "MEDIUM", "LARGE", "X_LARGE"] as const;
+const THEMES = ["LIGHT", "DARK", "SYSTEM"] as const;
 
 export default function Settings() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -55,9 +55,19 @@ export default function Settings() {
   // Apply text size
   useEffect(() => {
     if (settings?.textSize) {
-      document.documentElement.setAttribute("data-text-size", settings.textSize);
+      document.documentElement.setAttribute(
+        "data-text-size",
+        settings.textSize.replace("_", "-").toLowerCase(),
+      );
     }
   }, [settings?.textSize]);
+
+  // Apply theme
+  useEffect(() => {
+    if (settings?.theme) {
+      document.documentElement.setAttribute("data-theme", settings.theme.toLowerCase());
+    }
+  }, [settings?.theme]);
 
   if (isUserLoading) {
     return (
@@ -96,7 +106,10 @@ export default function Settings() {
               disabled={updateTextSize.isPending}
               onClick={() => updateTextSize.mutate(size)}
             >
-              {size.charAt(0).toUpperCase() + size.slice(1)}
+              {size
+                .replace("_", "-")
+                .toLowerCase()
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
             </Button>
           ))}
         </div>
@@ -116,7 +129,7 @@ export default function Settings() {
               disabled={updateSettings.isPending}
               onClick={() => updateSettings.mutate({ theme })}
             >
-              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+              {theme.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
             </Button>
           ))}
         </div>

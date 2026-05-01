@@ -30,69 +30,78 @@ export default function StudyView() {
   };
 
   return (
-    <div className="p-5 text-left">
-      <button
-        onClick={() => navigate(-1)}
-        className="bg-primary mt-3 w-fit cursor-pointer rounded-lg border-none px-[14px] py-[10px] text-white hover:bg-gray-300"
-      >
-        {"<"} Back
-      </button>
-      <div className="flex justify-between p-5">
-        <div className="flex flex-col items-start p-5">
-          <h1
-            className="text-heading justify-self-start text-[22px] font-medium"
-            style={{ margin: "10px 0" }}
-          >
-            {card.title || "Untitled"}
-          </h1>
-          <p>Description: {card.description || "No description available"}</p>
-          <p>Number of Cards: {flashcards.length ?? "N/A"}</p>
-          <p>Date Created: {card.createdAt ?? "Unknown"}</p>
-          <p>Status: {card.visibility === "PRIVATE" ? "Private" : "Public"}</p>
+    <div className="flex min-h-screen flex-col items-center p-5 text-left">
+      <div className="w-full max-w-4xl self-start">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-primary mt-3 cursor-pointer rounded-lg border-none px-4 py-2.5 text-white transition-opacity hover:opacity-90"
+        >
+          {"<"} Back
+        </button>
+      </div>
+
+      <div className="mt-8 flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+        <div className="flex w-full flex-col items-center text-center">
+          <h1 className="text-heading m-0 text-3xl font-bold">{card.title || "Untitled"}</h1>
+          <p className="text-text mt-2 text-lg">{card.description || "No description available"}</p>
+          <div className="text-text mt-4 flex gap-4 text-sm font-medium">
+            <span>{flashcards.length ?? 0} Cards</span>
+            <span>&bull;</span>
+            <span>{card.visibility === "PRIVATE" ? "Private" : "Public"}</span>
+            {card.createdAt && (
+              <>
+                <span>&bull;</span>
+                <span>Created {new Date(card.createdAt).toLocaleDateString()}</span>
+              </>
+            )}
+          </div>
         </div>
-        <div>
-          <h2 className="text-heading m-5 justify-self-start text-[22px] font-medium">
-            Flashcards
-          </h2>
+
+        <div className="flex w-full flex-col items-center pb-10">
           {flashcards.length > 0 ? (
-            <div className="flex flex-col items-center gap-5">
+            <div className="flex w-full flex-col items-center gap-8">
               <div
                 onClick={handleCardClick}
-                className="bg-surface relative flex h-62.5 w-100 cursor-pointer items-center justify-center rounded-[10px] shadow-[0_4px_8px_rgba(0,0,0,0.1)] transition-transform duration-300"
-                style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
+                className="bg-surface border-border relative flex min-h-80 w-full max-w-2xl cursor-pointer items-center justify-center rounded-2xl border p-8 shadow-lg transition-transform duration-300"
+                style={{
+                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                  perspective: 1000,
+                }}
               >
                 <div
-                  className={`text-center text-2xl font-bold ${isFlipped ? "text-[#333]" : "text-primary"}`}
+                  className={`flashcard-text text-center font-bold ${isFlipped ? "text-heading" : "text-primary"}`}
                   style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
                 >
                   {isFlipped ? currentCard.answer : currentCard.question}
                 </div>
               </div>
-              <div className="flex items-center gap-2.5">
+
+              <div className="flex items-center gap-4">
                 <button
                   onClick={handlePrevCard}
                   disabled={currentCardIndex === 0}
-                  className={`rounded-[5px] border-none px-5 py-2.5 text-white ${currentCardIndex === 0 ? "cursor-not-allowed bg-gray-300" : "bg-primary cursor-pointer"}`}
+                  className={`rounded-lg border-none px-6 py-3 font-medium text-white transition-opacity ${currentCardIndex === 0 ? "cursor-not-allowed bg-gray-400 opacity-50" : "bg-primary cursor-pointer hover:opacity-90"}`}
                 >
                   Previous
                 </button>
-                <span className="text-base text-[#666]">
+                <span className="text-text text-lg font-medium">
                   {currentCardIndex + 1} / {flashcards.length}
                 </span>
                 <button
                   onClick={handleNextCard}
                   disabled={currentCardIndex === flashcards.length - 1}
-                  className={`rounded-[5px] border-none px-5 py-2.5 text-white ${currentCardIndex === flashcards.length - 1 ? "cursor-not-allowed bg-gray-300" : "bg-primary cursor-pointer"}`}
+                  className={`rounded-lg border-none px-6 py-3 font-medium text-white transition-opacity ${currentCardIndex === flashcards.length - 1 ? "cursor-not-allowed bg-gray-400 opacity-50" : "bg-primary cursor-pointer hover:opacity-90"}`}
                 >
                   Next
                 </button>
               </div>
-              <p className="text-center text-sm text-[#666]">
+
+              <p className="text-text text-center text-sm">
                 Click the card to flip between term and definition
               </p>
             </div>
           ) : (
-            <p>No flashcards available.</p>
+            <p className="text-text mt-10">No flashcards available.</p>
           )}
         </div>
       </div>

@@ -74,13 +74,13 @@ class UserSettingsControllerTest {
     @Test
     @DisplayName("GET /settings returns 200 and settings body")
     void getSettings_authenticated_returns200() throws Exception {
-        UserSettingsResponse response = new UserSettingsResponse(TextSize.MEDIUM, Theme.LIGHT);
+        UserSettingsResponse response = new UserSettingsResponse(TextSize.MEDIUM, Theme.SYSTEM);
         doReturn(response).when(userSettingsService).getSettings("alice");
 
         mockMvc.perform(get("/api/settings"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.textSize").value("MEDIUM"))
-                .andExpect(jsonPath("$.theme").value("LIGHT"));
+                .andExpect(jsonPath("$.theme").value("SYSTEM"));
     }
 
     // PUT /api/settings
@@ -115,12 +115,13 @@ class UserSettingsControllerTest {
     @Test
     @DisplayName("PATCH /text-size with valid value returns 200 and updated textSize")
     void updateTextSize_validValue_returns200() throws Exception {
-        UserSettingsResponse updated = new UserSettingsResponse(TextSize.X_LARGE, Theme.LIGHT);
+        UserSettingsResponse updated = new UserSettingsResponse(TextSize.X_LARGE, Theme.SYSTEM);
         doReturn(updated).when(userSettingsService).updateSettings("alice", TextSize.X_LARGE);
 
         mockMvc.perform(patch("/api/settings/text-size").param("textSize", "X_LARGE"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.textSize").value("X_LARGE"));
+                .andExpect(jsonPath("$.textSize").value("X_LARGE"))
+                .andExpect(jsonPath("$.theme").value("SYSTEM"));
     }
 
     @Test

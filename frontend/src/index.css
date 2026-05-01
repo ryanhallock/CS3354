@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-@custom-variant dark (@media (prefers-color-scheme: dark));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant dark (@media (prefers-color-scheme: dark) { &:not(:where([data-theme="light"], [data-theme="light"] *)) });
 
 @theme {
   --color-primary: #1c208a;
@@ -15,8 +16,16 @@
   --font-size-card: 18px;
 }
 
+:root[data-theme="dark"] {
+  --color-bg: #16171d;
+  --color-surface: #1f2028;
+  --color-border: #2e303a;
+  --color-text: #9ca3af;
+  --color-heading: #f3f4f6;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-bg: #16171d;
     --color-surface: #1f2028;
     --color-border: #2e303a;
@@ -25,12 +34,23 @@
   }
 }
 
+:root[data-text-size="small"] {
+  --font-size-card: 14px;
+}
+:root[data-text-size="medium"] {
+  --font-size-card: 18px;
+}
+:root[data-text-size="large"] {
+  --font-size-card: 22px;
+}
+:root[data-text-size="x-large"] {
+  --font-size-card: 28px;
+}
+
 #root {
-  width: 1126px;
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--color-border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -45,19 +65,6 @@ body {
   letter-spacing: 0.18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  [data-text-size="small"] {
-    --font-size-card: 14px;
-  }
-  [data-text-size="medium"] {
-    --font-size-card: 18px;
-  }
-  [data-text-size="large"] {
-    --font-size-card: 22px;
-  }
-  [data-text-size="x-large"] {
-    --font-size-card: 28px;
-  }
 
   .flashcard-text {
     font-size: var(--font-size-card);

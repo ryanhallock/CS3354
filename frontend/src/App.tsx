@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Header } from "@/components/layout/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useSettings } from "@/hooks/useSettings";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import Create from "@/pages/Create";
@@ -13,6 +16,32 @@ import Settings from "@/pages/Settings";
 import StudyView from "@/pages/StudyView";
 
 function App() {
+  const { user } = useAuth();
+  const { settings } = useSettings(!!user);
+
+  useEffect(() => {
+    if (settings?.textSize) {
+      document.documentElement.setAttribute(
+        "data-text-size",
+        settings.textSize.replace("_", "-").toLowerCase(),
+      );
+    }
+  }, [settings?.textSize]);
+
+  useEffect(() => {
+    if (settings?.theme) {
+      document.documentElement.setAttribute("data-theme", settings.theme.toLowerCase());
+    }
+  }, [settings?.theme]);
+
+  // Remove data attributes when logged out
+  useEffect(() => {
+    if (!user) {
+      document.documentElement.removeAttribute("data-text-size");
+      document.documentElement.removeAttribute("data-theme");
+    }
+  }, [user]);
+
   return (
     <div className="bg-surface text-text min-h-screen font-sans">
       <Header />

@@ -69,7 +69,7 @@ class UserSettingsServiceTest {
         UserSettingsResponse response = service.updateSettings("alice", TextSize.SMALL);
 
         assertThat(response.textSize()).isEqualTo(TextSize.SMALL);
-        assertThat(response.theme()).isEqualTo(Theme.LIGHT); // default unchanged
+        assertThat(response.theme()).isEqualTo(Theme.SYSTEM); // default unchanged
     }
 
     // updateSettings(username, Theme)

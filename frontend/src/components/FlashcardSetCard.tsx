@@ -7,17 +7,21 @@ interface Flashcard {
 }
 
 interface FlashcardSetCardProps {
+  id?: number;
   title: string;
   description: string;
   visibility: "PUBLIC" | "PRIVATE";
+  owner?: string;
   createdAt: string;
   flashcards: Flashcard[];
 }
 
 export default function FlashcardSetCard({
+  id,
   title,
   description,
   visibility,
+  owner,
   createdAt,
   flashcards,
 }: FlashcardSetCardProps) {
@@ -25,13 +29,15 @@ export default function FlashcardSetCard({
 
   return (
     <div
-      className="border-border bg-surface min-w-62.5 cursor-pointer rounded-lg border p-4 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      className="border-border bg-surface flex h-full w-full cursor-pointer flex-col justify-between rounded-lg border p-5 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
       onClick={() =>
         navigate("/study", {
           state: {
+            id,
             title,
             description,
             visibility,
+            owner,
             createdAt,
             flashcards,
           },
@@ -46,8 +52,8 @@ export default function FlashcardSetCard({
           {visibility === "PRIVATE" ? "Private" : "Public"}
         </span>
       </div>
-      <p className="text-text my-2.5 text-left text-sm leading-relaxed">{description}</p>
-      <div className="text-heading flex justify-between text-xs">
+      <p className="text-text my-2.5 grow text-left text-sm leading-relaxed">{description}</p>
+      <div className="text-heading mt-2 flex justify-between text-xs">
         <span>{flashcards.length} cards</span>
         <span>{createdAt}</span>
       </div>

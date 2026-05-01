@@ -1,78 +1,11 @@
 import { useState } from "react";
 
 import FlashcardSetCard from "@/components/FlashcardSetCard";
+import { usePublicFlashcardSets } from "@/hooks/useFlashcards";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
-
-  const flashcardSetsData = [
-    {
-      title: "Biology 101",
-      description: "Cellular structure and functions",
-      visibility: "PUBLIC" as const,
-      createdAt: "2026-04-02T00:00:00Z",
-      flashcards: [
-        { id: 1, question: "Cell", answer: "The basic unit of life" },
-        { id: 2, question: "Mitochondria", answer: "Powerhouse of the cell" },
-        { id: 3, question: "Nucleus", answer: "Control center of the cell" },
-      ],
-    },
-    {
-      title: "US History",
-      description: "Civil War era and aftermath",
-      visibility: "PRIVATE" as const,
-      createdAt: "2026-03-28T00:00:00Z",
-      flashcards: [
-        { id: 4, question: "Question 1", answer: "Answer 1" },
-        { id: 5, question: "Question 2", answer: "Answer 2" },
-        { id: 6, question: "Question 3", answer: "Answer 3" },
-      ],
-    },
-    {
-      title: "US History 2",
-      description: "Civil War era and aftermath",
-      visibility: "PRIVATE" as const,
-      createdAt: "2026-03-28T00:00:00Z",
-      flashcards: [
-        { id: 7, question: "Question 1", answer: "Answer 1" },
-        { id: 8, question: "Question 2", answer: "Answer 2" },
-        { id: 9, question: "Question 3", answer: "Answer 3" },
-      ],
-    },
-    {
-      title: "Biology 101",
-      description: "Cellular structure and functions",
-      visibility: "PUBLIC" as const,
-      createdAt: "2026-04-02T00:00:00Z",
-      flashcards: [
-        { id: 10, question: "Cell", answer: "The basic unit of life" },
-        { id: 11, question: "Mitochondria", answer: "Powerhouse of the cell" },
-        { id: 12, question: "Nucleus", answer: "Control center of the cell" },
-      ],
-    },
-    {
-      title: "US History",
-      description: "Civil War era and aftermath",
-      visibility: "PRIVATE" as const,
-      createdAt: "2026-03-28T00:00:00Z",
-      flashcards: [
-        { id: 13, question: "Question 1", answer: "Answer 1" },
-        { id: 14, question: "Question 2", answer: "Answer 2" },
-        { id: 15, question: "Question 3", answer: "Answer 3" },
-      ],
-    },
-    {
-      title: "US History 6",
-      description: "Civil War era and aftermath",
-      visibility: "PRIVATE" as const,
-      createdAt: "2026-03-28T00:00:00Z",
-      flashcards: [
-        { id: 16, question: "Question 1", answer: "Answer 1" },
-        { id: 17, question: "Question 2", answer: "Answer 2" },
-        { id: 18, question: "Question 3", answer: "Answer 3" },
-      ],
-    },
-  ];
+  const { data: flashcardSetsData = [], isLoading } = usePublicFlashcardSets();
 
   const filteredSets = flashcardSetsData.filter((set) => {
     const q = searchQuery.trim().toLowerCase();
@@ -93,14 +26,18 @@ export default function Search() {
         />
       </div>
 
-      <div className="grid grid-flow-col grid-rows-3 gap-4 overflow-x-auto pb-5">
-        {filteredSets.length > 0 ? (
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 pb-5">
+        {isLoading ? (
+          <div className="text-[#666]">Loading public sets...</div>
+        ) : filteredSets.length > 0 ? (
           filteredSets.map((set, index) => (
             <FlashcardSetCard
-              key={`${set.title}-${index}`}
+              key={set.id || index}
+              id={set.id}
               title={set.title}
               description={set.description}
               visibility={set.visibility}
+              owner={set.owner}
               createdAt={set.createdAt}
               flashcards={set.flashcards}
             />
