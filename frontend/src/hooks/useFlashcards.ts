@@ -11,6 +11,7 @@ export interface FlashcardSet {
   title: string;
   description: string;
   visibility: "PUBLIC" | "PRIVATE";
+  owner: string;
   createdAt: string;
   flashcards: Flashcard[];
 }

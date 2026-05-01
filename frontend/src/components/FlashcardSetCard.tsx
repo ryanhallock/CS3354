@@ -16,6 +16,23 @@ interface FlashcardSetCardProps {
   flashcards: Flashcard[];
 }
 
+function formatTimestamp(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  }).format(date);
+}
+
 export default function FlashcardSetCard({
   id,
   title,
@@ -26,6 +43,7 @@ export default function FlashcardSetCard({
   flashcards,
 }: FlashcardSetCardProps) {
   const navigate = useNavigate();
+  const formattedCreatedAt = formatTimestamp(createdAt);
 
   return (
     <div
@@ -55,7 +73,7 @@ export default function FlashcardSetCard({
       <p className="text-text my-2.5 grow text-left text-sm leading-relaxed">{description}</p>
       <div className="text-heading mt-2 flex justify-between text-xs">
         <span>{flashcards.length} cards</span>
-        <span>{createdAt}</span>
+        <span>{formattedCreatedAt}</span>
       </div>
     </div>
   );

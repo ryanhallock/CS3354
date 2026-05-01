@@ -22,7 +22,7 @@ export default function Search() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by title or description..."
-          className="bg-surface text-heading w-[98%] rounded-lg border border-[#ccc] px-3 py-[10px] text-base"
+          className="bg-surface text-heading w-[98%] rounded-lg border border-[#ccc] px-3 py-2.5 text-base"
         />
       </div>
 
