@@ -52,6 +52,21 @@ export const usePublicFlashcardSets = () => {
   });
 };
 
+export const usePublicFlashcardSetsByUser = (username: string) => {
+  return useQuery<FlashcardSet[]>({
+    queryKey: ["public-flashcard-sets", username],
+    queryFn: async () => {
+      const res = await fetch(`/api/flashcardset/user/${username}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to fetch user's public sets");
+      return res.json();
+    },
+    enabled: !!username,
+  });
+};
+
 export const useFlashcardSet = (id: number | string) => {
   return useQuery<FlashcardSet>({
     queryKey: ["flashcard-set", id],

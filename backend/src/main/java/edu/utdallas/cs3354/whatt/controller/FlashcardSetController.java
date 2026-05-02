@@ -49,6 +49,11 @@ public class FlashcardSetController {
         return ResponseEntity.ok(flashcardSetService.getPublicSets());
     }
 
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<FlashcardSetResponse>> getPublicSetsByUser(@PathVariable String username) {
+        return ResponseEntity.ok(flashcardSetService.getPublicSetsByUser(username));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<FlashcardSetResponse> getById(
             @AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {

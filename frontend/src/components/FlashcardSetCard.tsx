@@ -1,6 +1,6 @@
-import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import { Copy, Edit, MoreVertical, Trash2, User } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import ConfirmDialog from "@/components/ConfirmDialog";
 import { useAuth } from "@/hooks/useAuth";
@@ -76,6 +76,19 @@ export default function FlashcardSetCard({
     navigate(`/edit/${id}`);
   };
 
+  const handleDuplicate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate("/create", {
+      state: {
+        duplicateFrom: {
+          title: `${title} (Copy)`,
+          description,
+          flashcards: flashcards.map(({ question, answer }) => ({ question, answer })),
+        },
+      },
+    });
+  };
+
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowConfirm(true);
@@ -106,43 +119,74 @@ export default function FlashcardSetCard({
             </span>
           </div>
 
-          {isOwner && (
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowMenu(!showMenu);
-                }}
-                className="text-text hover:bg-border/50 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-colors"
-              >
-                <MoreVertical size={20} />
-              </button>
+          <div className="relative">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowMenu(!showMenu);
+              }}
+              className="text-text hover:bg-border/50 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-colors"
+            >
+              <MoreVertical size={20} />
+            </button>
 
-              {showMenu && (
-                <div className="bg-surface border-border absolute right-0 z-10 mt-1 min-w-[120px] rounded-lg border py-1 shadow-lg">
+            {showMenu && (
+              <div className="bg-surface border-border absolute right-0 z-10 mt-1 min-w-[120px] rounded-lg border py-1 shadow-lg">
+                {isOwner ? (
+                  <>
+                    <button
+                      onClick={handleEdit}
+                      className="text-text hover:bg-border/50 flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-4 py-2 text-left text-sm transition-colors"
+                    >
+                      <Edit size={14} />
+                      Edit
+                    </button>
+                    <button
+                      onClick={handleDuplicate}
+                      className="text-text hover:bg-border/50 flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-4 py-2 text-left text-sm transition-colors"
+                    >
+                      <Copy size={14} />
+                      Duplicate
+                    </button>
+                    <button
+                      onClick={handleDeleteClick}
+                      className="hover:bg-border/50 flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-4 py-2 text-left text-sm text-red-600 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                      Delete
+                    </button>
+                  </>
+                ) : (
                   <button
-                    onClick={handleEdit}
+                    onClick={handleDuplicate}
                     className="text-text hover:bg-border/50 flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-4 py-2 text-left text-sm transition-colors"
                   >
-                    <Edit size={14} />
-                    Edit
+                    <Copy size={14} />
+                    Duplicate
                   </button>
-                  <button
-                    onClick={handleDeleteClick}
-                    className="hover:bg-border/50 flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-4 py-2 text-left text-sm text-red-600 transition-colors"
-                  >
-                    <Trash2 size={14} />
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <p className="text-text my-2.5 grow text-left text-sm leading-relaxed">{description}</p>
-        <div className="text-heading mt-2 flex justify-between text-xs">
-          <span>{flashcards.length} cards</span>
-          <span>{formattedCreatedAt}</span>
+        <div className="text-heading flex flex-col gap-2">
+          <div className="flex items-center justify-between text-xs">
+            <span>{flashcards.length} cards</span>
+            <span>{formattedCreatedAt}</span>
+          </div>
+          {owner && !isOwner && (
+            <div className="border-border flex items-center gap-1.5 border-t border-dashed pt-2">
+              <User size={12} className="text-text" />
+              <Link
+                to={`/profile/${owner}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-primary text-[11px] font-bold transition-colors hover:opacity-80"
+              >
+                @{owner}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 

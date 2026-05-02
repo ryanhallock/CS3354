@@ -10,5 +10,10 @@ public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Long
 
     List<FlashcardSet> findAllByVisibilityOrderByIdDesc(FlashcardSet.Visibility visibility);
 
+    List<FlashcardSet> findAllByOwnerUsernameAndVisibilityOrderByIdDesc(
+            String ownerUsername, FlashcardSet.Visibility visibility);
+
+    long countByOwnerUsernameAndVisibility(String ownerUsername, FlashcardSet.Visibility visibility);
+
     Optional<FlashcardSet> findByIdAndOwnerUsername(Long id, String ownerUsername);
 }

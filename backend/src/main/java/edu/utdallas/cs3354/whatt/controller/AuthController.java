@@ -1,7 +1,9 @@
 package edu.utdallas.cs3354.whatt.controller;
 
 import edu.utdallas.cs3354.whatt.dto.request.AuthRequest;
+import edu.utdallas.cs3354.whatt.entity.User;
 import edu.utdallas.cs3354.whatt.service.AuthService;
+import edu.utdallas.cs3354.whatt.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.Map;
@@ -20,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
+    private final UserService userService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PostMapping("/register")
@@ -37,29 +41,31 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
+    public ResponseEntity<Map<String, Object>> login(
             @Valid @RequestBody AuthRequest request, HttpServletResponse response) {
         try {
             ResponseCookie token = authService.login(request.username(), request.password());
             response.setHeader(HttpHeaders.SET_COOKIE, token.toString());
+            User user = userService.getUserByUsername(request.username());
             return ResponseEntity.ok(Map.of(
-                "username", request.username(),
-                "message", "Login successful"
-            ));
+                    "username", user.getUsername(),
+                    "createdAt", user.getCreatedAt(),
+                    "message", "Login successful"));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
     }
 
     @GetMapping("/whoami")
-    public ResponseEntity<Map<String, String>> whoami(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Map<String, Object>> whoami(@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "You are not authenticated"));
         }
+        User user = userService.getUserByUsername(userDetails.getUsername());
         return ResponseEntity.ok(Map.of(
-            "username", userDetails.getUsername(),
-            "message", "You are authenticated as " + userDetails.getUsername()
-        ));
+                "username", user.getUsername(),
+                "createdAt", user.getCreatedAt(),
+                "message", "You are authenticated as " + user.getUsername()));
     }
 
     @PostMapping("/logout")

@@ -1,4 +1,4 @@
-import { GripVertical, Lock, Plus, Trash2, Unlock } from "lucide-react";
+import { GripVertical, Info, Lock, Plus, Trash2, Unlock } from "lucide-react";
 import { useState } from "react";
 
 interface FlashcardEntry {
@@ -84,9 +84,42 @@ export default function FlashcardSetForm({
       <div className="flex w-full flex-col gap-10 lg:flex-row lg:gap-15">
         {/* Left column - Metadata */}
         <div className="flex flex-1 flex-col gap-5">
-          <div className="mb-2.5 flex flex-col gap-1">
-            <p className="text-heading m-0 text-lg font-medium">Set Details</p>
-            <p className="text-text m-0 text-sm">Provide a title and description for your set</p>
+          <div className="mb-2.5 flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <p className="text-heading m-0 text-lg font-medium">Set Details</p>
+              <p className="text-text m-0 text-sm">Provide a title and description for your set</p>
+            </div>
+            <div className="flex flex-row items-center gap-3">
+              <div className="group relative flex items-center gap-1.5">
+                <span className="text-heading text-sm font-medium">Public</span>
+                <div className="text-text hover:text-primary cursor-help transition-colors">
+                  <Info size={14} />
+                </div>
+                <div className="bg-primary text-surface absolute right-0 bottom-full mb-2 hidden w-48 rounded-md px-3 py-2 text-xs font-medium shadow-lg group-hover:block">
+                  Making this set public will allow all other users to discover and study it.
+                  <div className="bg-primary absolute top-full right-4 h-2 w-2 -translate-y-1/2 rotate-45" />
+                </div>
+              </div>
+              <div
+                className="relative inline-block h-6 w-11.5 cursor-pointer"
+                onClick={() => setIsPublic(!isPublic)}
+              >
+                <div
+                  className={`absolute inset-0 rounded-3xl transition-colors duration-300 ${isPublic ? "bg-primary" : "bg-border"}`}
+                >
+                  <div
+                    className={`bg-surface absolute bottom-0.5 h-5 w-5 rounded-full shadow-sm transition-[left] duration-300 ${isPublic ? "left-6" : "left-0.5"}`}
+                  ></div>
+                </div>
+              </div>
+              <span className="flex items-center justify-center">
+                {isPublic ? (
+                  <Unlock size={18} className="text-text" />
+                ) : (
+                  <Lock size={18} className="text-text" />
+                )}
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -108,29 +141,6 @@ export default function FlashcardSetForm({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-          </div>
-
-          <div className="mt-2 flex flex-row items-center justify-start gap-3">
-            <span className="text-heading text-[15px]">Make public</span>
-            <div
-              className="relative inline-block h-6 w-11.5 cursor-pointer"
-              onClick={() => setIsPublic(!isPublic)}
-            >
-              <div
-                className={`absolute inset-0 rounded-3xl transition-colors duration-300 ${isPublic ? "bg-primary" : "bg-border"}`}
-              >
-                <div
-                  className={`bg-surface absolute bottom-0.5 h-5 w-5 rounded-full shadow-sm transition-[left] duration-300 ${isPublic ? "left-6" : "left-0.5"}`}
-                ></div>
-              </div>
-            </div>
-            <span className="flex items-center justify-center">
-              {isPublic ? (
-                <Unlock size={20} className="text-text" />
-              ) : (
-                <Lock size={20} className="text-text" />
-              )}
-            </span>
           </div>
         </div>
 
@@ -157,7 +167,7 @@ export default function FlashcardSetForm({
                       <GripVertical size={20} />
                     </div>
                     <span className="text-heading text-sm font-semibold">
-                      {card.question.trim() ? card.question : `Card ${index + 1}`}
+                      {card.answer.trim() ? card.answer : `Card ${index + 1}`}
                     </span>
                   </div>
                   {flashcards.length > 1 && (

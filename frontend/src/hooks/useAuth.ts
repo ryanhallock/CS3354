@@ -4,6 +4,7 @@ const AUTH_QUERY_KEY = ["auth-status"];
 
 export interface User {
   username: string;
+  createdAt?: string;
   message?: string;
 }
 
@@ -84,4 +85,25 @@ export const useAuth = () => {
     register: registerMutation,
     logout: logoutMutation,
   };
+};
+
+export const useUserProfile = (username: string) => {
+  return useQuery<User | null>({
+    queryKey: ["user-profile", username],
+    queryFn: async () => {
+      const res = await fetch(`/api/user/${username}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (res.status === 403) return null;
+      if (!res.ok) throw new Error("Failed to fetch user profile");
+      return res.json();
+    },
+    enabled: !!username,
+    retry: (failureCount, error) => {
+      if (error instanceof Error && error.message === "Failed to fetch user profile")
+        return failureCount < 2;
+      return false;
+    },
+  });
 };

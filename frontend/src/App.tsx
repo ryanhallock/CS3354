@@ -59,7 +59,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/create" element={<Create />} />
             <Route path="/edit/:id" element={<Edit />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:username?" element={<Profile />} />
             <Route path="/study" element={<StudyView />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

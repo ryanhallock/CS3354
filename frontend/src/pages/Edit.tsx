@@ -28,8 +28,8 @@ export default function Edit() {
   };
 
   return (
-    <div className="box-border flex min-h-screen w-full flex-col items-stretch p-7.5 text-left">
-      <h1 className="text-primary mt-5 mb-5 justify-self-start text-[30px] font-medium">Edit</h1>
+    <div className="flex flex-col gap-8 px-6 py-10">
+      <h1 className="text-heading text-3xl font-bold">Edit</h1>
       <FlashcardSetForm
         initialData={{
           title: set.title,

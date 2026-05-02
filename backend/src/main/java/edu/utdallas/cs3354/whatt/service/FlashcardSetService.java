@@ -57,6 +57,20 @@ public class FlashcardSetService {
     }
 
     @Transactional(readOnly = true)
+    public List<FlashcardSetResponse> getPublicSetsByUser(String username) {
+        return flashcardSetRepository
+                .findAllByOwnerUsernameAndVisibilityOrderByIdDesc(username, FlashcardSet.Visibility.PUBLIC)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean hasPublicSets(String username) {
+        return flashcardSetRepository.countByOwnerUsernameAndVisibility(username, FlashcardSet.Visibility.PUBLIC) > 0;
+    }
+
+    @Transactional(readOnly = true)
     public FlashcardSetResponse getVisibleSetById(String username, Long id) {
         FlashcardSet flashcardSet = getSetById(id);
         boolean isOwner = flashcardSet.getOwner().getUsername().equals(username);

@@ -10,7 +10,7 @@ export function Button({ children, variant = "primary", className = "", ...props
   const variants = {
     primary: "bg-primary text-white border-none hover:bg-opacity-90",
     secondary: "bg-gray-200 text-heading border-none hover:bg-gray-300",
-    outline: "border border-border bg-transparent text-heading hover:bg-gray-50",
+    outline: "border border-border bg-transparent text-heading hover:bg-primary/5",
   };
 
   return (

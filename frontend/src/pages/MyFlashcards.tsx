@@ -1,47 +1,68 @@
+import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import FlashcardSetCard from "@/components/FlashcardSetCard";
+import { Button } from "@/components/ui/Button";
 import { useOwnFlashcardSets } from "@/hooks/useFlashcards";
 
 export default function MyFlashcards() {
   const navigate = useNavigate();
-  const { data: flashcardSetsData = [], isLoading } = useOwnFlashcardSets();
+  const { data: sets = [], isLoading } = useOwnFlashcardSets();
+
+  const publicSets = sets.filter((set) => set.visibility === "PUBLIC");
+  const privateSets = sets.filter((set) => set.visibility === "PRIVATE");
 
   return (
-    <div className="relative min-h-screen p-5">
-      <h1 className="text-primary mt-5 mb-5 justify-self-start text-[30px] font-medium">
-        My Flashcards
-      </h1>
-
-      <div className="bg-surface border-border flex justify-between rounded-md border shadow-lg">
-        <h1 className="text-heading m-5 justify-self-start text-[22px] font-medium">All Sets</h1>
+    <div className="flex flex-col gap-8 px-6 py-10">
+      <div className="flex items-center justify-between">
+        <h1 className="text-heading text-3xl font-bold">My Flashcards</h1>
+        <Button onClick={() => navigate("/create")} className="flex items-center gap-2">
+          <Plus size={20} />
+          Create New Set
+        </Button>
       </div>
 
-      {isLoading ? (
-        <div className="p-5 text-gray-500">Loading sets...</div>
-      ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 p-5">
-          {flashcardSetsData.map((set, index) => (
-            <FlashcardSetCard
-              key={set.id || index}
-              id={set.id}
-              title={set.title}
-              description={set.description}
-              visibility={set.visibility}
-              owner={set.owner}
-              createdAt={set.createdAt}
-              flashcards={set.flashcards}
-            />
-          ))}
+      <div className="space-y-12">
+        {/* Public Sets Section */}
+        <div>
+          <h3 className="text-heading mb-6 text-xl font-bold tracking-wide uppercase">
+            Public Sets
+          </h3>
+          {isLoading ? (
+            <div className="text-text animate-pulse">Loading sets...</div>
+          ) : publicSets.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {publicSets.map((set) => (
+                <FlashcardSetCard key={set.id} {...set} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-text border-border bg-surface rounded-xl border border-dashed p-10 text-center">
+              You don't have any public sets yet.
+            </div>
+          )}
         </div>
-      )}
 
-      <button
-        className="bg-primary absolute right-5 bottom-5 flex h-12.5 w-12.5 cursor-pointer items-center justify-center rounded-full border-none text-2xl text-white shadow-[0_2px_10px_rgba(0,0,0,0.2)] hover:bg-[#16207a]"
-        onClick={() => navigate("/create")}
-      >
-        +
-      </button>
+        {/* Private Sets Section */}
+        <div>
+          <h3 className="text-heading mb-6 text-xl font-bold tracking-wide uppercase">
+            Private Sets
+          </h3>
+          {isLoading ? (
+            <div className="text-text animate-pulse">Loading sets...</div>
+          ) : privateSets.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {privateSets.map((set) => (
+                <FlashcardSetCard key={set.id} {...set} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-text border-border bg-surface rounded-xl border border-dashed p-10 text-center">
+              You don't have any private sets yet.
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

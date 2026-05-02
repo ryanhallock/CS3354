@@ -2,12 +2,14 @@ package edu.utdallas.cs3354.whatt;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import edu.utdallas.cs3354.whatt.controller.AuthController;
 import edu.utdallas.cs3354.whatt.security.JwtAuthFilter;
 import edu.utdallas.cs3354.whatt.service.AuthService;
+import edu.utdallas.cs3354.whatt.service.UserService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,9 @@ class AuthControllerTest {
     private AuthService authService;
 
     @MockitoBean
+    private UserService userService;
+
+    @MockitoBean
     private JwtAuthFilter jwtAuthFilter;
 
     // register
@@ -150,6 +155,11 @@ class AuthControllerTest {
                 .when(authService)
                 .login("alice", "pass123");
 
+        edu.utdallas.cs3354.whatt.entity.User alice = new edu.utdallas.cs3354.whatt.entity.User();
+        alice.setUsername("alice");
+        alice.setCreatedAt(java.time.Instant.now());
+        when(userService.getUserByUsername("alice")).thenReturn(alice);
+
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -157,6 +167,8 @@ class AuthControllerTest {
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Login successful"))
+                .andExpect(jsonPath("$.username").value("alice"))
+                .andExpect(jsonPath("$.createdAt").exists())
                 .andExpect(header().string("Set-Cookie", containsString("jwt=")))
                 .andExpect(header().string("Set-Cookie", containsString("HttpOnly")));
     }
@@ -217,5 +229,31 @@ class AuthControllerTest {
         }
 
         verify(authService).logout("alice");
+    }
+
+    @Test
+    @DisplayName("TC9: GET /whoami returns user profile")
+    void whoami_returnsProfile() throws Exception {
+        UserDetails principal = org.springframework.security.core.userdetails.User.withUsername("alice")
+                .password("ignored")
+                .authorities("ROLE_USER")
+                .build();
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+
+        edu.utdallas.cs3354.whatt.entity.User alice = new edu.utdallas.cs3354.whatt.entity.User();
+        alice.setUsername("alice");
+        alice.setCreatedAt(java.time.Instant.now());
+        when(userService.getUserByUsername("alice")).thenReturn(alice);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            mockMvc.perform(get("/api/auth/whoami"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.username").value("alice"))
+                    .andExpect(jsonPath("$.createdAt").exists());
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
     }
 }
