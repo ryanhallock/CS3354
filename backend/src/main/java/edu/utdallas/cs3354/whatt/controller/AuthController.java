@@ -42,7 +42,10 @@ public class AuthController {
         try {
             ResponseCookie token = authService.login(request.username(), request.password());
             response.setHeader(HttpHeaders.SET_COOKIE, token.toString());
-            return ResponseEntity.ok(Map.of("message", "Login successful"));
+            return ResponseEntity.ok(Map.of(
+                "username", request.username(),
+                "message", "Login successful"
+            ));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
@@ -53,7 +56,10 @@ public class AuthController {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "You are not authenticated"));
         }
-        return ResponseEntity.ok(Map.of("message", "You are authenticated as " + userDetails.getUsername()));
+        return ResponseEntity.ok(Map.of(
+            "username", userDetails.getUsername(),
+            "message", "You are authenticated as " + userDetails.getUsername()
+        ));
     }
 
     @PostMapping("/logout")
