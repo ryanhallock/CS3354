@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const AUTH_QUERY_KEY = ["auth-status"];
 
 export interface User {
-  id: number;
   username: string;
+  message?: string;
 }
 
 export const useAuth = () => {
