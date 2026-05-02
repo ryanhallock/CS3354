@@ -47,7 +47,7 @@ function App() {
     <div className="bg-surface text-text min-h-screen font-sans">
       <Header />
 
-      <main className="container mx-auto">
+      <main className="w-full">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
