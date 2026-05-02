@@ -48,7 +48,7 @@ export default function StudyView() {
 
   return (
     <div className="flex min-h-screen flex-col items-center p-5 text-left">
-      <div className="flex w-full max-w-4xl items-center justify-between self-start">
+      <div className="flex w-full max-w-6xl items-center justify-between">
         <button
           onClick={() => navigate(-1)}
           className="bg-primary mt-3 flex cursor-pointer items-center gap-1 rounded-lg border-none px-4 py-2.5 text-white transition-opacity hover:opacity-90"
