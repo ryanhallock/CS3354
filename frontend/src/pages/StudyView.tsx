@@ -1,15 +1,24 @@
+import { ChevronLeft, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import ConfirmDialog from "@/components/ConfirmDialog";
+import { useAuth } from "@/hooks/useAuth";
+import { useDeleteFlashcardSet } from "@/hooks/useFlashcards";
 
 export default function StudyView() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const deleteMutation = useDeleteFlashcardSet();
   const card = state || {};
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const flashcards = card.flashcards || [];
   const currentCard = flashcards[currentCardIndex];
+  const isOwner = user && card.owner === user.username;
 
   const handleCardClick = () => {
     setIsFlipped(!isFlipped);
@@ -29,15 +38,42 @@ export default function StudyView() {
     }
   };
 
+  const handleDelete = () => {
+    if (card.id) {
+      deleteMutation.mutate(card.id, {
+        onSuccess: () => navigate("/myflashcards"),
+      });
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center p-5 text-left">
-      <div className="w-full max-w-4xl self-start">
+      <div className="flex w-full max-w-4xl items-center justify-between self-start">
         <button
           onClick={() => navigate(-1)}
-          className="bg-primary mt-3 cursor-pointer rounded-lg border-none px-4 py-2.5 text-white transition-opacity hover:opacity-90"
+          className="bg-primary mt-3 flex cursor-pointer items-center gap-1 rounded-lg border-none px-4 py-2.5 text-white transition-opacity hover:opacity-90"
         >
-          {"<"} Back
+          <ChevronLeft size={20} /> Back
         </button>
+
+        {isOwner && (
+          <div className="mt-3 flex gap-2">
+            <button
+              onClick={() => navigate(`/edit/${card.id}`)}
+              className="border-primary text-primary flex cursor-pointer items-center gap-2 rounded-lg border bg-transparent px-4 py-2.5 font-medium transition-colors hover:bg-blue-50/10"
+            >
+              <Edit size={18} />
+              Edit
+            </button>
+            <button
+              onClick={() => setShowConfirm(true)}
+              className="flex cursor-pointer items-center gap-2 rounded-lg border-none bg-red-600 px-4 py-2.5 font-medium text-white transition-opacity hover:opacity-90"
+            >
+              <Trash2 size={18} />
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="mt-8 flex w-full max-w-4xl flex-col items-center justify-center gap-8">
@@ -105,6 +141,16 @@ export default function StudyView() {
           )}
         </div>
       </div>
+
+      {showConfirm && (
+        <ConfirmDialog
+          title="Delete Flashcard Set"
+          message={`Are you sure you want to delete "${card.title}"? This action cannot be undone.`}
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirm(false)}
+          isLoading={deleteMutation.isPending}
+        />
+      )}
     </div>
   );
 }

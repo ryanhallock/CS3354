@@ -46,7 +46,7 @@ export function AuthForm({ type, onSubmit, error, isLoading }: AuthFormProps) {
         <Input
           label="Password"
           type="password"
-          placeholder="••••••••"
+          placeholder="********"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -56,7 +56,7 @@ export function AuthForm({ type, onSubmit, error, isLoading }: AuthFormProps) {
           <Input
             label="Confirm Password"
             type="password"
-            placeholder="••••••••"
+            placeholder="********"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required

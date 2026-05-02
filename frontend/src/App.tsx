@@ -8,6 +8,7 @@ import { useSettings } from "@/hooks/useSettings";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import Create from "@/pages/Create";
+import Edit from "@/pages/Edit";
 import Home from "@/pages/Home";
 import MyFlashcards from "@/pages/MyFlashcards";
 import Profile from "@/pages/Profile";
@@ -57,6 +58,7 @@ function App() {
             <Route path="/myflashcards" element={<MyFlashcards />} />
             <Route path="/search" element={<Search />} />
             <Route path="/create" element={<Create />} />
+            <Route path="/edit/:id" element={<Edit />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/study" element={<StudyView />} />
             <Route path="/settings" element={<Settings />} />
