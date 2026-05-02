@@ -33,19 +33,19 @@
 }
 
 :root[data-text-size="small"] {
-  --font-size-card: 14px;
+  --font-size-card: 16px;
 }
 
 :root[data-text-size="medium"] {
-  --font-size-card: 18px;
+  --font-size-card: 20px;
 }
 
 :root[data-text-size="large"] {
-  --font-size-card: 22px;
+  --font-size-card: 26px;
 }
 
 :root[data-text-size="x-large"] {
-  --font-size-card: 28px;
+  --font-size-card: 48px;
 }
 
 body {
